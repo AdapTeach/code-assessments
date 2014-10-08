@@ -22,17 +22,40 @@ ideone.getLanguages = function () {
     return deferred.promise;
 };
 
-ideone.createSubmission = function () {
+ideone.createSubmission = function (code) {
     var params = {
         user: credentials.user,
         pass: credentials.pass,
-        sourceCode: 'some code...',
+        sourceCode: code,
         language: 10,
         input: '',
-        run: false,
+        run: true,
         private: true
     };
     return Q.nfcall(client.createSubmission, params);
+};
+
+ideone.getSubmissionStatus = function (submissionId) {
+    var params = {
+        user: credentials.user,
+        pass: credentials.pass,
+        link: submissionId
+    };
+    return Q.nfcall(client.getSubmissionStatus, params);
+};
+
+ideone.getSubmissionDetails = function (submissionId) {
+    var params = {
+        user: credentials.user,
+        pass: credentials.pass,
+        link: submissionId,
+        withOutput: true,
+        withStderr: true,
+        withCmpinfo: true,
+        withSource: false,
+        withInput: false
+    };
+    return Q.nfcall(client.getSubmissionDetails, params);
 };
 
 module.exports = ideone;
