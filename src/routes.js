@@ -1,23 +1,17 @@
 var express = require('express'),
-    router = express.Router(),
-    soap = require('soap');
+    router = express.Router();
 
-var credentials = require('../config/credentials');
+var ideone = require('./ideone');
 
-router.get('/languages', function (req, res) {
-    soap.createClient('http://ideone.com/api/1/service.wsdl', function (err, client) {
-        var params = {
-            user: credentials.user,
-            pass: credentials.pass,
-            sourceCode: 'appServer',
-            language: 10,
-            input: '',
-            run: false,
-            private: true
-        };
-        client.getLanguages(params, function (error, result) {
-            res.send(result.return.item[1].value.item);
-        });
+router.get('/getLanguages', function (req, res) {
+    ideone.getLanguages().then(function (languages) {
+        res.send(languages);
+    });
+});
+
+router.post('/createSubmission', function (req, res) {
+    ideone.createSubmission().then(function (submission) {
+        res.send(submission);
     });
 });
 
