@@ -1,0 +1,4 @@
+# IDE config files
+.idea
+
+config/credentials.js
