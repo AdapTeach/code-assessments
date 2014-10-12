@@ -23,6 +23,7 @@ ideone.getLanguages = function () {
 };
 
 ideone.createSubmission = function (code) {
+    var deferred = Q.defer();
     var params = {
         user: credentials.user,
         pass: credentials.pass,
@@ -32,16 +33,23 @@ ideone.createSubmission = function (code) {
         run: true,
         private: true
     };
-    return Q.nfcall(client.createSubmission, params);
+    client.createSubmission(params, function (error, result) {
+        deferred.resolve(result.return.item[1].value.$value);
+    });
+    return deferred.promise;
 };
 
 ideone.getSubmissionStatus = function (submissionId) {
+    var deferred = Q.defer();
     var params = {
         user: credentials.user,
         pass: credentials.pass,
         link: submissionId
     };
-    return Q.nfcall(client.getSubmissionStatus, params);
+    client.getSubmissionStatus(params, function(error, result) {
+        deferred.resolve(result.return.item[1].value.$value);
+    });
+    return deferred.promise;
 };
 
 ideone.getSubmissionDetails = function (submissionId) {

@@ -2,6 +2,7 @@ var express = require('express'),
     router = express.Router();
 
 var ideone = require('./ideone'),
+    submissions = require('./assessments/submissions'),
     assessments = require('./assessments/assessments');
 
 router.get('/getLanguages', function (req, res) {
@@ -17,12 +18,11 @@ router.post('/testSubmission', function (req, res) {
 });
 
 router.post('/helloWorld', function (req, res) {
-    var assessment = assessments.helloWorld;
-    assessment.submit('class Program {    public static void main (String[] args) {      System.out.println("Hello, World !");  }}')
-        .then(function (submission) {
-            res.send({submission: submission});
-//            console.log(submission);
-//            if (submission.passed) {
+    submissions.submit(assessments.helloWorld, 'class Program {    public static void main (String[] args) {      System.out.println("Hello, World !");  }}')
+        .then(function (result) {
+            res.send({result: result});
+//            console.log(result);
+//            if (result.passed) {
 //            } else {
 //            }
         })
