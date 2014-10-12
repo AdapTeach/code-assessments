@@ -17,29 +17,21 @@ var waitForFiveSeconds = function (promise) {
 
 var getResult = function (submissionId) {
     console.log('Getting result for : ' + submissionId);
-    var deferred = Q.defer();
-    checkFinished(submissionId).then(function (finished) {
-        if (finished) {
-            deferred.resolve({passed: true});
+    return checkFinished(submissionId).then(function (finished) {
+        return {passed: finished};
 //            var output = result[0].return.item[11].value.$value;
 //            if (output === 'Hello, World !') {
 //                deferred.resolve({pass: true});
 //            } else {
 //                deferred.resolve({pass: false});
 //            }
-        } else {
-            deferred.resolve({passed: false});
-        }
     });
-    return deferred.promise;
 };
 
 var checkFinished = function (submissionId) {
-    var deferred = Q.defer();
-    ideone.getSubmissionStatus(submissionId).then(function (status) {
-        deferred.resolve(status === '0'); // Status 0 means submitted code execution is finished
+    return ideone.getSubmissionStatus(submissionId).then(function (status) {
+        return status === '0'; // Status 0 means submitted code execution is finished
     });
-    return deferred.promise;
 };
 
 module.exports = submissions;
