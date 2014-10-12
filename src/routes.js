@@ -20,14 +20,13 @@ router.post('/helloWorld', function (req, res) {
     var assessment = assessments.helloWorld;
     assessment.submit('class Program {    public static void main (String[] args) {      System.out.println("Hello, World !");  }}')
         .then(function (submission) {
-            console.log(submission);
-            if (submission.passed) {
-                res.send({passed: true});
-            } else {
-                res.send({passed: false});
-            }
+            res.send({submission: submission});
+//            console.log(submission);
+//            if (submission.passed) {
+//            } else {
+//            }
         })
-        .catch(function(error){
+        .catch(function (error) {
             console.log(error);
         });
 });
