@@ -6,11 +6,11 @@ var submissions = {};
 
 submissions.submit = function (assessment, code) {
     return ideone.createSubmission(code)// TODO Supplement code for specific assessment
-        .then(waitForFiveSeconds)
+        .then(waitForOneSecond)
         .then(getResult);
 };
 
-var waitForFiveSeconds = function (promise) {
+var waitForOneSecond = function (promise) {
     console.log('Waiting...');
     return Q.delay(promise, 5000);
 };
@@ -19,13 +19,18 @@ var getResult = function (submissionId) {
     console.log('Getting result for : ' + submissionId);
     return checkFinished(submissionId).then(function (finished) {
         return {passed: finished};
-//            var output = result[0].return.item[11].value.$value;
-//            if (output === 'Hello, World !') {
-//                deferred.resolve({pass: true});
+        // TODO
+//            if (finished) {
+//                return {passed: finished};
 //            } else {
-//                deferred.resolve({pass: false});
+//
 //            }
     });
+};
+
+var waitUntilFinished = function(submissionId) {
+    // TODO
+    // checkFinished(submissionId).then
 };
 
 var checkFinished = function (submissionId) {
