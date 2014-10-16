@@ -27,7 +27,7 @@ ideone.createSubmission = function (submission) {
     var params = {
         user: credentials.user,
         pass: credentials.pass,
-        sourceCode: submission.executableCode,
+        sourceCode: submission.runnableCode,
         language: 10,
         input: '',
         run: true,

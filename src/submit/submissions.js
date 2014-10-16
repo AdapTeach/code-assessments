@@ -5,7 +5,7 @@ var Submission = require('./Submission');
 
 var submissions = {};
 
-var MAX_ATTEMPTS = 15;
+var MAX_ATTEMPTS = 30;
 
 submissions.submit = function (assessment, submittedCode) {
     var submission = new Submission(assessment, submittedCode);

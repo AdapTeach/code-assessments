@@ -2,8 +2,8 @@ var express = require('express'),
     router = express.Router();
 
 var ideone = require('./ideone'),
-    submissions = require('./assessments/submissions'),
-    assessments = require('./assessments/assessments');
+    submissions = require('./submit/submissions'),
+    assessments = require('./assess/assessments');
 
 router.get('/getLanguages', function (request, response) {
     ideone.getLanguages().then(function (languages) {
@@ -15,6 +15,10 @@ router.post('/testSubmission', function (request, response) {
     ideone.createSubmission().then(function (submission) {
         response.send(submission);
     });
+});
+
+router.get('/helloWorld', function(request, response) {
+    response.send(assessments.helloWorld);
 });
 
 router.post('/helloWorld', function (request, response) {

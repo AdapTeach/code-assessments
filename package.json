@@ -8,7 +8,9 @@
         "morgan": "~1.3.0",
         "debug": "~2.0.0",
         "soap": "*",
-        "q": "*"
+        "q": "*",
+        "validator": "*",
+        "lodash": "*"
     },
     "devDependencies": {
         "gulp": "*",
