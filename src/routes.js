@@ -21,13 +21,9 @@ router.post('/helloWorld', function (req, res) {
     submissions.submit(assessments.helloWorld, 'class Program {    public static void main (String[] args) {      System.out.println("Hello, World !");  }}')
         .then(function (result) {
             res.send({result: result});
-//            console.log(result);
-//            if (result.passed) {
-//            } else {
-//            }
         })
         .catch(function (error) {
-            console.log(error);
+            res.status(500).send(error);
         });
 });
 
