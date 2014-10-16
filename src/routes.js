@@ -5,26 +5,49 @@ var ideone = require('./ideone'),
     submissions = require('./assessments/submissions'),
     assessments = require('./assessments/assessments');
 
-router.get('/getLanguages', function (req, res) {
+router.get('/getLanguages', function (request, response) {
     ideone.getLanguages().then(function (languages) {
-        res.send(languages);
+        response.send(languages);
     });
 });
 
-router.post('/testSubmission', function (req, res) {
+router.post('/testSubmission', function (request, response) {
     ideone.createSubmission().then(function (submission) {
-        res.send(submission);
+        response.send(submission);
     });
 });
 
-router.post('/helloWorld', function (req, res) {
-    submissions.submit(assessments.helloWorld, 'class Program {    public static void main (String[] args) {      System.out.println("Hello, World !");  }}')
-        .then(function (result) {
-            res.send({result: result});
-        })
-        .catch(function (error) {
-            res.status(500).send(error);
-        });
+router.post('/helloWorld', function (request, response) {
+    var submittedCode = getCode(request, response);
+    if (submittedCode !== undefined) {
+        submissions.submit(assessments.helloWorld, submittedCode)
+            .then(function (submission) {
+                response.send({result: buildResult(submission)});
+            })
+            .catch(function (error) {
+                console.error(error);
+                response.status(500).send(error);
+            });
+    }
 });
+
+var getCode = function (request, response) {
+    var submittedCode = request.body.code;
+    if (submittedCode === undefined) {
+        response.status(400).send('No code was submitted');
+    }
+    return submittedCode;
+};
+
+var buildResult = function (submission) {
+    if (submission.checkCorrectOutput()) {
+        return {pass: true};
+    } else {
+        return {
+            pass: false
+            // TODO Add useful info
+        };
+    }
+};
 
 module.exports = router;

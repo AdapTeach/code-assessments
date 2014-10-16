@@ -22,19 +22,20 @@ ideone.getLanguages = function () {
     return deferred.promise;
 };
 
-ideone.createSubmission = function (code) {
+ideone.createSubmission = function (submission) {
     var deferred = Q.defer();
     var params = {
         user: credentials.user,
         pass: credentials.pass,
-        sourceCode: code,
+        sourceCode: submission.executableCode,
         language: 10,
         input: '',
         run: true,
         private: true
     };
     client.createSubmission(params, function (error, result) {
-        deferred.resolve(result.return.item[1].value.$value);
+        submission.id = result.return.item[1].value.$value;
+        deferred.resolve(submission);
     });
     return deferred.promise;
 };
@@ -46,24 +47,32 @@ ideone.getSubmissionStatus = function (submissionId) {
         pass: credentials.pass,
         link: submissionId
     };
-    client.getSubmissionStatus(params, function(error, result) {
+    client.getSubmissionStatus(params, function (error, result) {
         deferred.resolve(result.return.item[1].value.$value);
     });
     return deferred.promise;
 };
 
-ideone.getSubmissionDetails = function (submissionId) {
+ideone.getSubmissionDetails = function (submission) {
+    var deferred = Q.defer();
     var params = {
         user: credentials.user,
         pass: credentials.pass,
-        link: submissionId,
+        link: submission.id,
         withOutput: true,
         withStderr: true,
         withCmpinfo: true,
         withSource: false,
         withInput: false
     };
-    return Q.nfcall(client.getSubmissionDetails, params);
+    client.getSubmissionDetails(params, function (error, result) {
+        submission.error = result.return.item[0].value.$value;
+        submission.output = result.return.item[11].value.$value;
+        submission.stderr = result.return.item[12].value.$value;
+        submission.cmpinfo = result.return.item[13].value.$value;
+        deferred.resolve(submission);
+    });
+    return deferred.promise;
 };
 
 module.exports = ideone;
