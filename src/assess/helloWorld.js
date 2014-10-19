@@ -1,5 +1,7 @@
 var helloWorld = {};
 
+helloWorld.title = "Hello World";
+
 helloWorld.instructions = 'Write a static method called helloWorld which returns "Hello, World !"';
 
 helloWorld.startCode = [

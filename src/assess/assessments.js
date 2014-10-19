@@ -1,7 +1,7 @@
 var _ = require('lodash'),
     validator = require('validator');
 
-var assessmentNames = [
+var assessmentIds = [
     'helloWorld'
 ];
 
@@ -16,18 +16,21 @@ var transformMainMethod = function (assessment) {
 };
 
 var validate = function (assessment) {
+    validator.isLength(assessment.id, 2);
+    validator.isLength(assessment.title, 2);
     validator.isLength(assessment.instructions, 10);
     validator.contains(assessment.startCode, 'class');
     validator.contains(assessment.mainMethod, 'System.out.print');
     validator.isLength(assessment.expectedOutput, 1);
 };
 
-_.forEach(assessmentNames, function (assessmentName) {
-    var assessment = require('./' + assessmentName);
+_.forEach(assessmentIds, function (assessmentId) {
+    var assessment = require('./' + assessmentId);
+    assessment.id = assessmentId;
     transformMainMethod(assessment);
     transformStartCode(assessment);
     validate(assessment);
-    assessments[assessmentName] = assessment;
+    assessments[assessmentId] = assessment;
 });
 
 module.exports = assessments;
