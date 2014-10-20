@@ -1,10 +1,10 @@
-var helloWorld = {};
+var assessment = {};
 
-helloWorld.title = "Hello World";
+assessment.title = "Hello World";
 
-helloWorld.instructions = 'Write a static method called helloWorld which returns "Hello, World !"';
+assessment.instructions = 'Write a static method called helloWorld which returns "Hello, World !"';
 
-helloWorld.startCode = [
+assessment.startCode = [
     'class HelloWorldAssessment {',
     '',
     '   // Code here',
@@ -12,10 +12,16 @@ helloWorld.startCode = [
     '}'
 ];
 
-helloWorld.mainMethod = [
-    'System.out.println(helloWorld());'
+assessment.tests = [
+    {
+        title: 'Should return \'Hello, World !\'',
+        code: [],
+        expectations: [
+            {
+                expression: 'helloWorld().equals("Hello, World !")'
+            }
+        ]
+    }
 ];
 
-helloWorld.correctOutput = "Hello, World !";
-
-module.exports = helloWorld;
+module.exports = assessment;

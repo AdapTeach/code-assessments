@@ -2,30 +2,40 @@ var Submission = function (assessment, submittedCode) {
 
     this.assessment = assessment;
     this.submittedCode = submittedCode;
-    this.runnableCode = addMainMethod(assessment, submittedCode);
+    this.runnableCode = mergeCodes(assessment, submittedCode);
 
 };
 
-var addMainMethod = function (assessment, submittedCode) {
-    var begin = submittedCode.substring(0, submittedCode.lastIndexOf('}'));
-    var main = [
+var mergeCodes = function (assessment, submittedCode) {
+    var codeToAppend = assessment.testMethods + buildMainMethod(assessment.mainMethod);
+    return appendCode(submittedCode, codeToAppend);
+};
+
+var buildMainMethod = function (mainMethod) {
+    return [
             '\t' + 'public static void main(String[] main) {',
-            '\t\t' + assessment.mainMethod,
+            '\t\t' + mainMethod,
             '\t' + '}'
     ].join('\n');
+};
+
+var appendCode = function (submittedCode, codeToAppend) {
+    var begin = submittedCode.substring(0, submittedCode.lastIndexOf('}'));
     var end = '}';
     return [
         begin,
-        main,
+        codeToAppend,
         end
     ].join('\n');
 };
 
-Submission.prototype.checkCorrectOutput = function () {
-    console.log('Checking correct output...');
+Submission.prototype.checkOutput = function () {
+    console.log('Checking output...');
     console.log('output : ' + this.output);
-    console.log('correctOutput : ' + this.assessment.correctOutput);
-    return this.output === this.assessment.correctOutput;
+    if (!this.output) return false;
+    var outputLength = this.output.length;
+    var outputEnd = this.output.substring(outputLength - 4, outputLength);
+    return outputEnd === 'true';
 };
 
 // Hide constructor

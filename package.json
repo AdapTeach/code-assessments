@@ -15,6 +15,7 @@
     "devDependencies": {
         "gulp": "*",
         "gulp-jshint": "*",
-        "gulp-nodemon": "*"
+        "gulp-nodemon": "*",
+        "jasmine-node": "*"
     }
 }

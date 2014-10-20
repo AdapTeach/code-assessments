@@ -16,7 +16,7 @@ submissions.submit = function (assessment, submittedCode) {
 var waitUntilFinishedAndGetResult = function (submission) {
     console.log('Waiting until finished...');
     var deferred = Q.defer();
-    setTimeout(getResultIfFinishedOrTryLater(submission, MAX_ATTEMPTS, deferred), 1000);
+    setTimeout(getResultIfFinishedOrTryLater(submission, MAX_ATTEMPTS, deferred), 3000);
     return deferred.promise;
 };
 
@@ -33,7 +33,7 @@ var getResultIfFinishedOrTryLater = function (submission, remainingAttempts, def
                         deferred.reject(error);
                     });
                 } else {
-                    setTimeout(getResultIfFinishedOrTryLater(submission, remainingAttempts - 1, deferred), 1000);
+                    setTimeout(getResultIfFinishedOrTryLater(submission, remainingAttempts - 1, deferred), 3000);
                 }
             });
         } else {

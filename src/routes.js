@@ -17,14 +17,43 @@ router.post('/testSubmission', function (request, response) {
     });
 });
 
-router.get('/helloWorld', function(request, response) {
-    response.send(assessments.helloWorld);
+// STUBS
+
+router.get('/assessment/failStub', function (request, response) {
+    var failStubAssessment = {
+        id: 'failStub',
+        instructions: 'Stubbed instructions',
+        startCode: 'Stubbed Start Code'
+    };
+    response.send(failStubAssessment);
 });
 
-router.post('/helloWorld', function (request, response) {
+router.post('/assessment/failStub', function (request, response) {
+    var sendResult = function () {
+        response.send({
+            result: {
+                pass: false,
+                cmpinfo: 'Main.java:7: error: cannot find symbol\n' +
+                    'System.out.println(assessment());\n' +
+                    'symbol:   method assessment()\n' +
+                    'location: class HelloWorldAssessment\n' +
+                    '1 error',
+                output: 'Some arbitrary output',
+                error: 'OK'
+            }
+        });
+    };
+    setTimeout(sendResult, 500);
+});
+
+router.get('/assessment/:id', function (request, response) {
+    response.send(assessments[request.params.id]);
+});
+
+router.post('/assessment/:id', function (request, response) {
     var submittedCode = getCode(request, response);
     if (submittedCode !== undefined) {
-        submissions.submit(assessments.helloWorld, submittedCode)
+        submissions.submit(assessments[request.params.id], submittedCode)
             .then(function (submission) {
                 response.send({result: buildResult(submission)});
             })
@@ -44,12 +73,14 @@ var getCode = function (request, response) {
 };
 
 var buildResult = function (submission) {
-    if (submission.checkCorrectOutput()) {
+    if (submission.checkOutput()) {
         return {pass: true};
     } else {
         return {
-            pass: false
-            // TODO Add useful info
+            pass: false,
+            cmpinfo: submission.cmpinfo,
+            output: submission.output.substring(0, submission.output.lastIndexOf('\n')), // Remove last line from output
+            error: submission.error
         };
     }
 };
