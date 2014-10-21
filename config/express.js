@@ -57,8 +57,8 @@ module.exports = function(db) {
     });
 
 
-    config.getGlobbedFiles('./src/**/*.route.js').forEach(function(routePath) {
-        require(path.resolve(routePath));
+    config.getGlobbedFiles('./src/**/**/*.route.js').forEach(function(routePath) {
+        require(path.resolve(routePath))(app);
     });
 
 	app.use(function(err, req, res, next) {

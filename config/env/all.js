@@ -6,5 +6,5 @@ module.exports = {
 		description: '',
 		keywords: ''
 	},
-	port: 5011
+	port: 5010
 };

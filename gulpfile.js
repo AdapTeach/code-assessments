@@ -14,7 +14,9 @@ gulp.task('dev', function () {
 
 gulp.task('lint', function () {
     gulp.src(pathToSrc)
-        .pipe(jshint())
+        .pipe(jshint({
+            strict:false
+        }))
         .pipe(jshint.reporter('default'));
 });
 

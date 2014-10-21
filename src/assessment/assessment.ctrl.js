@@ -1,65 +1,45 @@
-var _ = require('lodash'),
-    validator = require('validator');
+"use strict";
 
-var assessmentIds = [
-    'helloWorld',
-    'allPositive'
-];
+var mongoose = require('mongoose-q')(),
+    Assessment = mongoose.model('Assessment');
 
-var assessments = {};
+module.exports.fetchAll = function(req,res){
+    Assessment.findQ().then(function(assessments){
+        res.json(assessments);
+    }).fail(function(err){
+        res.json(err);
+    })
+};
 
-_.forEach(assessmentIds, function (assessmentId) {
-    var assessment = require('./' + assessmentId);
-    assessment.id = assessmentId;
-    transformStartCode(assessment);
-    buildTestMethods(assessment);
-    buildMainMethod(assessment);
-    validate(assessment);
-    assessments[assessmentId] = assessment;
-});
+module.exports.fetchOne = function(req,res){
+    Assessment.findOne({ _id : req.params.id }).execQ().then(function(assessment){
+        res.json(assessment);
+    }).fail(function(err){
+        res.json(err);
+    })
+};
 
-function transformStartCode(assessment) {
-    assessment.startCode = assessment.startCode.join('\n');
-}
+module.exports.create = function(req,res){
+    var assess = new Assessment(req.body);
+    assess.saveQ().then(function(assess){
+        res.json(assess);
+    }).fail(function(err){
+        res.json(err);
+    })
+};
 
-function buildTestMethods(assessment) {
-    assessment.testMethods = _.map(assessment.tests, function (test, testIndex) {
-        return ['static boolean test' + testIndex + '() {',
-                '\t' + test.code.join('\n\t\t'),
-                '\tboolean passExpectation = (' + test.expectations[0].expression + ');',
-            '\tif (!passExpectation) {',
-                '\t\tSystem.out.println("Failed test #' + testIndex + ' : ' + test.title + '");',
-            '\t}',
-            '\treturn passExpectation;',
-            '}'
-        ].join('\n\t');
-    }).join('\n\t\t');
-}
+module.exports.update = function(req,res){
+    Assessment.findOneAndUpdateQ({ _id : req.params.id },req.body).then(function(assessment){
+        res.json(assessment);
+    }).fail(function(err){
+        res.json(err);
+    })
+};
 
-function buildMainMethod(assessment) {
-    var testCount = assessment.tests.length;
-    var mainMethodCode = ['\t\tboolean[] testResults = new boolean[' + testCount + '];'];
-    for (var i = 0; i < testCount; i++) {
-        mainMethodCode.push('testResults[' + i + '] = test' + i + '();');
-    }
-    var finalCheck = [
-        'boolean pass = true;',
-        'for (boolean result : testResults) {',
-        '\tif (!result) pass = false;',
-        '}',
-        'System.out.print(pass);'
-    ].join('\n\t\t');
-    mainMethodCode.push(finalCheck);
-    assessment.mainMethod = mainMethodCode.join('\n\t\t');
-}
-
-function validate(assessment) {
-    validator.isLength(assessment.id, 2);
-    validator.isLength(assessment.title, 2);
-    validator.isLength(assessment.instructions, 10);
-    validator.contains(assessment.startCode, 'class');
-    validator.contains(assessment.mainMethod, 'System.out.print');
-    // TODO Validate tests
-}
-
-module.exports = assessments;
+module.exports.remove = function(req,res){
+    Assessment.remove({ _id : req.params.id }).execQ().then(function(){
+        res.json();
+    }).fail(function(err){
+        res.json(err);
+    })
+};

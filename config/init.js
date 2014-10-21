@@ -26,4 +26,6 @@ module.exports = function() {
 	require.extensions['.routes.js'] = require.extensions['.js'];
     require.extensions['.service.js'] = require.extensions['.js'];
 
+
+
 };
