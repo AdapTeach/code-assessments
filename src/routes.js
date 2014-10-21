@@ -3,7 +3,7 @@ var express = require('express'),
 
 var ideone = require('./ideone'),
     submissions = require('./submit/submissions'),
-    assessments = require('./assess/assessments');
+    assessments = require('./assessment/assessments.ctrl');
 
 router.get('/getLanguages', function (request, response) {
     ideone.getLanguages().then(function (languages) {

@@ -8,7 +8,7 @@ gulp.task('default', ['dev'], function () {
 });
 
 gulp.task('dev', function () {
-    nodemon({ script: 'src/server.js' })
+    nodemon({ script: 'server.js' })
         .on('change', ['lint']);
 });
 
