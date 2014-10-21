@@ -15,6 +15,22 @@ assessment.startCode = [
     '}'
 ];
 
+assessment.tips = [];
+
+assessment.guides = [
+    [
+        'class AllPositiveAssessment {',
+        '',
+        '   static boolean allPositive(int[] array) {',
+        '       for (int element : array) {',
+        '           // Code here',
+        '       }',
+        '   }',
+        '',
+        '}'
+    ]
+];
+
 assessment.tests = [
     {
         title: 'Should return true when passed an array containing positive integers only',
