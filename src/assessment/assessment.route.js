@@ -5,7 +5,7 @@ module.exports = function (app) {
 
     stubs.publish(app);
 
-    app.get('/assessments', assessmentCtrl.fetchAll);
+    app.get('/assessment', assessmentCtrl.fetchAll);
     app.post('/assessment', assessmentCtrl.create);
     app.route('/assessment/:id')
         .get(assessmentCtrl.fetchOne)
