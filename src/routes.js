@@ -1,50 +1,8 @@
 var express = require('express'),
     router = express.Router();
 
-var ideone = require('./ideone'),
-    submissions = require('./submit/submissions'),
+var submissions = require('./submit/submissions'),
     assessments = require('./assessment/assessments.ctrl');
-
-router.get('/getLanguages', function (request, response) {
-    ideone.getLanguages().then(function (languages) {
-        response.send(languages);
-    });
-});
-
-router.post('/testSubmission', function (request, response) {
-    ideone.createSubmission().then(function (submission) {
-        response.send(submission);
-    });
-});
-
-// STUBS
-
-router.get('/assessment/failStub', function (request, response) {
-    var failStubAssessment = {
-        id: 'failStub',
-        instructions: 'Stubbed instructions',
-        startCode: 'Stubbed Start Code'
-    };
-    response.send(failStubAssessment);
-});
-
-router.post('/assessment/failStub', function (request, response) {
-    var sendResult = function () {
-        response.send({
-            result: {
-                pass: false,
-                cmpinfo: 'Main.java:7: error: cannot find symbol\n' +
-                    'System.out.println(assessment());\n' +
-                    'symbol:   method assessment()\n' +
-                    'location: class HelloWorldAssessment\n' +
-                    '1 error',
-                output: 'Some arbitrary output',
-                error: 'OK'
-            }
-        });
-    };
-    setTimeout(sendResult, 500);
-});
 
 router.get('/assessment/:id', function (request, response) {
     response.send(assessments[request.params.id]);

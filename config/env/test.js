@@ -1,6 +1,3 @@
-'use strict';
-
 module.exports = {
-	db: 'mongodb://localhost/codegrader-test'
-
+    db: 'mongodb://localhost/codegrader-test'
 };

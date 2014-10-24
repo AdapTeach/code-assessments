@@ -1,5 +1,3 @@
-"use strict";
-
 var mongoose = require("mongoose-q")(),
     Schema = mongoose.Schema;
 
