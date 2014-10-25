@@ -31,10 +31,10 @@ assessments.publish = function (router) {
         http.request(http.normalizeRequest(options))
             .then(function (submissionResponse) {
                 submissionResponse.body.read().then(function (body) {
-                    console.log(body);
-                    response.status(submissionResponse.status).end();
+                    response
+                        .status(submissionResponse.status)
+                        .send(body);
                 });
-                //response.send(submissionResponse.body);
             });
     });
 
