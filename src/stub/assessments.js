@@ -1,18 +1,17 @@
 var _ = require('lodash'),
-    http = require("q-io/http"),
-    allPositive = require('./allPositive'),
-    helloWorld = require('./helloWorld');
+    http = require("q-io/http");
 
 var assessments = {};
 
 assessments.publish = function (router) {
 
-    router.get('/stubs/helloWorld', function (request, response) {
-        console.log('Stubbed helloWorld assessment');
-        response.send(helloWorld);
+    router.get('/stubs/:assessmentId', function (request, response) {
+        var assessment = require('./' + request.params.assessmentId);
+        response.send(assessment);
     });
 
-    router.post('/stubs/helloWorld', function (request, response) {
+    router.post('/stubs/:assessmentId', function (request, response) {
+        var assessment = require('./' + request.params.assessmentId);
         var submittedCode = request.body.code;
         var options = {
             url: 'http://localhost:5020/v1/',
@@ -20,9 +19,9 @@ assessments.publish = function (router) {
             body: [
                 JSON.stringify({
                     assessment: {
-                        title: helloWorld.title,
-                        className: helloWorld.className,
-                        tests: helloWorld.tests
+                        title: assessment.title,
+                        className: assessment.className,
+                        tests: assessment.tests
                     },
                     code: submittedCode
                 })
