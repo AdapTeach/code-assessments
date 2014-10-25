@@ -1,4 +1,4 @@
 code-grader
 ===========
 
-API Server to automatically grade student-submitted code (powered by ideone)
+API Server to automatically assess student-submitted code
