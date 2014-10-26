@@ -1,5 +1,7 @@
 var assessment = {};
 
+assessment.id = 'allPositive';
+
 assessment.title = 'All Positive';
 
 assessment.instructions = 'Implement the static method allPositive() which takes an array of integers as input' +
