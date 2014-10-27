@@ -1,4 +1,5 @@
 var _ = require('lodash'),
+    assessmentData = require('./assessments'),
     http = require("q-io/http");
 
 var assessments = {};
