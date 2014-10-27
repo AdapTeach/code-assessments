@@ -5,8 +5,10 @@ module.exports = function (app) {
 
     stubs.publish(app);
 
-    app.get('/assessment', assessmentCtrl.fetchAll);
-    app.post('/assessment', assessmentCtrl.create);
+    app.route('/assessment')
+        .get(assessmentCtrl.fetchAll)
+        .post(assessmentCtrl.create);
+
     app.route('/assessment/:id')
         .get(assessmentCtrl.fetchOne)
         .put(assessmentCtrl.update)
@@ -19,6 +21,9 @@ module.exports = function (app) {
         .put(assessmentCtrl.updateGuide)
         .delete(assessmentCtrl.removeGuide);
 
+    app.route('/assessment/:id/guide/:index/move/:new')
+        .put(assessmentCtrl.moveGuide);
+
     app.route('/assessment/:id/test')
         .post(assessmentCtrl.createTest);
 
@@ -27,6 +32,12 @@ module.exports = function (app) {
         .put(assessmentCtrl.updateTest);
 
     app.route('/assessment/:id/tip')
-        .post(assessmentCtrl.createTip)
-        .delete(assessmentCtrl.removeTip);
+        .post(assessmentCtrl.createTip);
+
+    app.route('/assessment/:id/tip/:index')
+        .delete(assessmentCtrl.removeTip)
+        .put(assessmentCtrl.updateTip);
+
+    app.route('/assessment/:id/tip/:index/move/:new')
+        .put(assessmentCtrl.moveTip);
 };

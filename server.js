@@ -1,5 +1,7 @@
 'use strict';
-
+Array.prototype.move = function(from, to) {
+    this.splice(to, 0, this.splice(from, 1)[0]);
+};
 require('./config/init')();
 var config = require('./config/config'),
     mongoose = require('mongoose-q')(),

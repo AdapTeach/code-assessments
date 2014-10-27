@@ -1,6 +1,7 @@
 "use strict";
 
-var mongoose = require('mongoose-q')(),
+var Q = require('q'),
+    mongoose = require('mongoose-q')(),
     Assessment = mongoose.model('Assessment'),
     Guide = mongoose.model('Guide'),
     Test = mongoose.model('Test');
@@ -14,7 +15,7 @@ module.exports.fetchAll = function(req,res){
 };
 
 module.exports.fetchOne = function(req,res){
-    Assessment.findOne({ _id : req.params.id }).populate('tests').execQ().then(function(assessment){
+    Assessment.findOne({ _id : req.params.id }).populate('guides').populate('tests').execQ().then(function(assessment){
         res.json(assessment);
     }).fail(function(err){
         res.json(err);
@@ -54,11 +55,34 @@ module.exports.createTip = function(req,res){
     })
 };
 
-module.exports.removeTip = function(req,res){
-    Assessment.findOneAndUpdateQ({ _id : req.query.id },{ $pull : { tips : req.body.content }}).then(function(){
-        res.json();
+module.exports.updateTip = function(req,res){
+    Assessment.findOne({ _id : req.params.id }).execQ().then(function(assessment){
+        assessment.tips[req.params.index] = req.body.text;
+        assessment.saveQ().then(function(){
+            res.json();
+        })
     }).fail(function(err){
         res.json(400,err)
+    })
+};
+
+module.exports.removeTip = function(req,res){
+    Assessment.findOne({ _id : req.params.id }).execQ().then(function(assessment){
+        delete assessment.tips[req.params.index];
+        assessment.saveQ().then(function(){
+            res.json();
+        })
+    }).fail(function(err){
+        res.json(400,err)
+    })
+};
+
+module.exports.moveTip = function(req,res){
+    Assessment.findOne().execQ().then(function(assessment){
+        assessment.tips.splice(req.params.new,0,assessment.tips[req.params.index]);
+        assessment.saveQ().then(function(){
+            res.json();
+        });
     })
 };
 
@@ -90,6 +114,24 @@ module.exports.updateGuide = function(req,res){
     }).fail(function(err){
         res.json(400,err);
     })
+};
+
+module.exports.moveGuide = function(req,res){
+    Assessment.findOne({ _id : req.params.id },function(err, assessment){
+        console.log(assessment.guides);
+        //assessment.guides.splice(req.params.index,1);
+        assessment.guides.move(req.params.index,req.params.new);
+        console.log(assessment.guides,err);
+        assessment.save(function(err,data){
+            console.log(data.guides,err);
+            res.json();
+        });
+    });
+    //Q.all([
+    //    Assessment.findOneAndUpdateQ({ _id : req.params.id },{ $pull : {  } }),
+    //
+    //])
+    //
 };
 
 module.exports.createTest = function(req,res){
