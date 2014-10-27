@@ -1,4 +1,5 @@
-var http = require("q-io/http");
+var http = require('q-io/http'),
+    assessmentValidator = require('./assessmentValidator');
 
 var assessments = {};
 
@@ -14,11 +15,17 @@ var loadData = function () {
     http.request(options)
         .then(function (response) {
             response.body.read().then(function (body) {
-                var newData = {};
-                JSON.parse(body).assessments.forEach(function (assessment) {
-                    newData[assessment.id] = assessment;
-                });
-                data = newData;
+                var assessments = JSON.parse(body).assessments;
+                if (assessmentValidator.validate(assessments)) {
+                    var newData = {};
+                    JSON.parse(body).assessments.forEach(function (assessment) {
+                        newData[assessment.id] = assessment;
+                    });
+                    data = newData;
+                } else {
+                    console.log('Failed validation, keeping old data');
+                }
+
             });
         });
 };
