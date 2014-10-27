@@ -49,4 +49,8 @@ assessments.get = function (assessmentId) {
     return deferred.promise;
 };
 
+assessments.reload = function () {
+    return loadData();
+};
+
 module.exports = assessments;

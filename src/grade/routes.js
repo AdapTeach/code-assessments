@@ -17,6 +17,13 @@ var getAssessment = function (request, response) {
 
 routes.publish = function (router) {
 
+    router.post('/assess/reloadData', function (request, response) {
+        assessmentData.reload()
+            .then(function () {
+                response.send('OK');
+            });
+    });
+
     router.get('/assess/:assessmentId', function (request, response) {
         getAssessment(request, response).then(function (assessment) {
             delete assessment.className;
