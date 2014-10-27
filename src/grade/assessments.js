@@ -1,4 +1,5 @@
-var http = require('q-io/http'),
+var q = require('q'),
+    http = require('q-io/http'),
     assessmentValidator = require('./assessmentValidator');
 
 var assessments = {};
@@ -12,7 +13,7 @@ var loadData = function () {
         url: DATA_URL,
         method: 'GET'
     };
-    http.request(options)
+    return http.request(options)
         .then(function (response) {
             return response.body.read().then(function (body) {
                 var assessments = JSON.parse(body).assessments;
@@ -36,7 +37,16 @@ var loadData = function () {
 loadData();
 
 assessments.get = function (assessmentId) {
-    return data[assessmentId];
+    var deferred = q.defer();
+    var assessment = data[assessmentId];
+    if (assessment) {
+        deferred.resolve(assessment);
+    } else { // Assessment not found, reload data and try again
+        loadData().then(function () {
+            deferred.resolve(data[assessmentId]);
+        });
+    }
+    return deferred.promise;
 };
 
 module.exports = assessments;
