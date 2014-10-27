@@ -8,7 +8,11 @@ routes.publish = function (router) {
 
     router.get('/assess/:assessmentId', function (request, response) {
         var assessmentId = request.params.assessmentId;
-        var assessment = assessmentData.get(assessmentId);
+        var assessment = _.cloneDeep(assessmentData.get(assessmentId));
+        delete assessment.className;
+        delete assessment.tests;
+        delete assessment.tips;
+        delete assessment.guides;
         response.send(assessment);
     });
 
