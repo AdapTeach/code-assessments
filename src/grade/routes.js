@@ -2,17 +2,19 @@ var _ = require('lodash'),
     assessmentData = require('./assessments'),
     http = require("q-io/http");
 
-var assessments = {};
+var routes = {};
 
-assessments.publish = function (router) {
+routes.publish = function (router) {
 
-    router.get('/stubs/:assessmentId', function (request, response) {
-        var assessment = require('./' + request.params.assessmentId);
+    router.get('/assess/:assessmentId', function (request, response) {
+        var assessmentId = request.params.assessmentId;
+        var assessment = assessmentData.get(assessmentId);
         response.send(assessment);
     });
 
-    router.post('/stubs/:assessmentId', function (request, response) {
-        var assessment = require('./' + request.params.assessmentId);
+    router.post('/assess/:assessmentId', function (request, response) {
+        var assessmentId = request.params.assessmentId;
+        var assessment = assessmentData.get(assessmentId);
         var submittedCode = request.body.code;
         var options = {
             url: 'http://localhost:5020/v1/',
@@ -40,4 +42,4 @@ assessments.publish = function (router) {
 
 };
 
-module.exports = assessments;
+module.exports = routes;

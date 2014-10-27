@@ -14,7 +14,7 @@ var loadData = function () {
     };
     http.request(options)
         .then(function (response) {
-            response.body.read().then(function (body) {
+            return response.body.read().then(function (body) {
                 var assessments = JSON.parse(body).assessments;
                 if (assessmentValidator.validate(assessments)) {
                     var newData = {};
@@ -25,8 +25,11 @@ var loadData = function () {
                 } else {
                     console.log('Failed validation, keeping old data');
                 }
-
             });
+        })
+        .catch(function (error) {
+            console.log('Error loading JSON from URL : ' + DATA_URL);
+            console.log('Error : ' + error);
         });
 };
 

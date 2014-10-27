@@ -2,7 +2,7 @@ var express = require('express'),
     router = express.Router();
 
 var submissions = require('./submit/submissions'),
-    assessments = require('./assessment/assessments.ctrl');
+    assessments = require('./assessment/routes.ctrl');
 
 router.get('/assessment/:id', function (request, response) {
     response.send(assessments[request.params.id]);
