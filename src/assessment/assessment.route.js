@@ -1,5 +1,5 @@
 var assessmentCtrl = require('./assessment.ctrl'),
-    stubs = require('../stub/assessments');
+    stubs = require('../grade/routes');
 
 module.exports = function (app) {
 
