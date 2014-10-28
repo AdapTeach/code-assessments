@@ -11,7 +11,7 @@ module.exports.fetchAll = function(req,res){
         res.json(assessments);
     }).fail(function(err){
         res.json(err);
-    })
+    });
 };
 
 module.exports.fetchOne = function(req,res){
@@ -19,7 +19,7 @@ module.exports.fetchOne = function(req,res){
         res.json(assessment);
     }).fail(function(err){
         res.json(err);
-    })
+    });
 };
 
 module.exports.create = function(req,res){
@@ -28,7 +28,7 @@ module.exports.create = function(req,res){
         res.json(assess);
     }).fail(function(err){
         res.json(err);
-    })
+    });
 };
 
 module.exports.update = function(req,res){
@@ -36,7 +36,7 @@ module.exports.update = function(req,res){
         res.json(assessment);
     }).fail(function(err){
         res.json(err);
-    })
+    });
 };
 
 module.exports.remove = function(req,res){
@@ -44,15 +44,15 @@ module.exports.remove = function(req,res){
         res.json();
     }).fail(function(err){
         res.json(err);
-    })
+    });
 };
 
 module.exports.createTip = function(req,res){
-    Assessment.findOneAndUpdateQ({ _id : req.params.id },{ $push : { tips : req.body.text }}).then(function(){
-        res.json();
+    Assessment.findOneAndUpdateQ({ _id : req.params.id },{ $push : { tips : req.body.text }}).then(function(tip){
+        res.json(tip);
     }).fail(function(err){
-        res.json(400,err)
-    })
+        res.json(400,err);
+    });
 };
 
 module.exports.updateTip = function(req,res){
@@ -60,10 +60,10 @@ module.exports.updateTip = function(req,res){
         assessment.tips[req.params.index] = req.body.text;
         assessment.saveQ().then(function(){
             res.json();
-        })
+        });
     }).fail(function(err){
-        res.json(400,err)
-    })
+        res.json(400,err);
+    });
 };
 
 module.exports.removeTip = function(req,res){
@@ -71,19 +71,19 @@ module.exports.removeTip = function(req,res){
         delete assessment.tips[req.params.index];
         assessment.saveQ().then(function(){
             res.json();
-        })
+        });
     }).fail(function(err){
-        res.json(400,err)
-    })
+        res.json(400,err);
+    });
 };
 
 module.exports.moveTip = function(req,res){
-    Assessment.findOne().execQ().then(function(assessment){
-        assessment.tips.splice(req.params.new,0,assessment.tips[req.params.index]);
-        assessment.saveQ().then(function(){
+    Assessment.findOne({ _id : req.params.id },function(err,assessment){
+        assessment.tips.move(req.params.index,req.params.new);
+        assessment.save(function(){
             res.json();
         });
-    })
+    });
 };
 
 module.exports.createGuide = function(req,res){
@@ -94,10 +94,10 @@ module.exports.createGuide = function(req,res){
         }).fail(function(err){
             console.log(err);
             res.status(400).json(err);
-        })
+        });
     }).fail(function(err){
         res.json(400,err);
-    })
+    });
 };
 
 module.exports.removeGuide = function(req,res){
@@ -105,7 +105,7 @@ module.exports.removeGuide = function(req,res){
         res.json();
     }).fail(function(err){
         res.json(400,err);
-    })
+    });
 };
 
 module.exports.updateGuide = function(req,res){
@@ -113,15 +113,12 @@ module.exports.updateGuide = function(req,res){
         res.json();
     }).fail(function(err){
         res.json(400,err);
-    })
+    });
 };
 
 module.exports.moveGuide = function(req,res){
     Assessment.findOne({ _id : req.params.id },function(err, assessment){
-        console.log(assessment.guides);
-        //assessment.guides.splice(req.params.index,1);
         assessment.guides.move(req.params.index,req.params.new);
-        console.log(assessment.guides,err);
         assessment.save(function(err,data){
             console.log(data.guides,err);
             res.json();
@@ -141,10 +138,10 @@ module.exports.createTest = function(req,res){
             res.json(test);
         }).fail(function(err){
             res.json(400,err);
-        })
+        });
     }).fail(function(err){
         res.json(400,err);
-    })
+    });
 };
 
 module.exports.removeTest = function(req,res){
@@ -152,7 +149,7 @@ module.exports.removeTest = function(req,res){
         res.json();
     }).fail(function(err){
         res.json(400,err);
-    })
+    });
 };
 
 module.exports.updateTest = function(req,res){
@@ -160,5 +157,5 @@ module.exports.updateTest = function(req,res){
         res.json();
     }).fail(function(err){
         res.json(400,err);
-    })
+    });
 };

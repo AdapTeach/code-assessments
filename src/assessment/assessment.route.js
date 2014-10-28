@@ -1,9 +1,6 @@
-var assessmentCtrl = require('./assessment.ctrl'),
-    stubs = require('../grade/routes');
+var assessmentCtrl = require('./assessment.ctrl');
 
 module.exports = function (app) {
-
-    stubs.publish(app);
 
     app.route('/assessment')
         .get(assessmentCtrl.fetchAll)
