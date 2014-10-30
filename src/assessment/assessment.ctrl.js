@@ -8,8 +8,10 @@ var Q = require('q'),
 
 module.exports.fetchAll = function(req,res){
     Assessment.find().select('_id title').execQ().then(function(assessments){
+        console.log(assessments);
         res.json(assessments);
     }).fail(function(err){
+        console.log(err);
         res.json(err);
     });
 };
