@@ -1,5 +1,5 @@
 module.exports = {
-    dbUrl: 'mongodb://Charl:mongolab4tw@ds039277.mongolab.com:39277/codeassessments',
+    dbUrl: 'mongodb://Charl:af8c5c494622afb87fb241b5a513fc1d@ds039277.mongolab.com:39277/codeassessments',
     dbRoot : 'admin',
     dbPassword :'KAPDyGr4G2Rp',
     crossOrigin: '',
