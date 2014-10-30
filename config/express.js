@@ -6,7 +6,7 @@ var express = require('express'),
     config = require('./config'),
     path = require('path');
 
-module.exports = function (db) {
+module.exports = function () {
 
     var app = express();
 
