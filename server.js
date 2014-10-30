@@ -5,7 +5,10 @@ Array.prototype.move = function(from, to) {
 require('./config/init')();
 var config = require('./config/config'),
     mongoose = require('mongoose-q')(),
-    db = mongoose.connect(config.db);
+    db = mongoose.connect(config.dbUrl,{
+        user : config.dbRoot,
+        pass : config.dbPassword
+    });
 var app = require('./config/express')(db);
 app.listen(config.port);
-console.log('CodeGrader api started on port ' + config.port);
+console.log('CodeAssessments api started on port ' + config.port);
