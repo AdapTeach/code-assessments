@@ -1,5 +1,5 @@
 module.exports = {
-    dbUrl: 'mongodb://charl:af8c5c494622afb87fb241b5a513fc1d@ds039277.mongolab.com:39277/codeassessments',
+    dbUrl: 'mongodb://'+process.env.OPENSHIFT_MONGODB_DB_HOST+':'+process.env.OPENSHIFT_MONGODB_DB_PORT+'/codeassessments',
     dbRoot : 'admin',
     dbPassword :'KAPDyGr4G2Rp',
     crossOrigin: '',
