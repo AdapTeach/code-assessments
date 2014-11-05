@@ -1,4 +1,4 @@
-code-grader
+code-assessments
 ===========
 
-API Server to automatically assess student-submitted code
+API Server providing CRUD functionality for assessments
