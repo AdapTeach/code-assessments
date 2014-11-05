@@ -23,6 +23,7 @@
   "devDependencies": {
     "gulp": "*",
     "gulp-jshint": "*",
+    "jshint-stylish": "^1.0.0",
     "gulp-nodemon": "*",
     "jasmine-node": "*"
   }
