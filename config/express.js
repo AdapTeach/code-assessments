@@ -1,18 +1,18 @@
 var express = require('express'),
-  morgan = require('morgan'),
-  bodyParser = require('body-parser'),
-  compress = require('compression'),
-  methodOverride = require('method-override'),
-  config = require('./config'),
-  path = require('path');
+    morgan = require('morgan'),
+    bodyParser = require('body-parser'),
+    compress = require('compression'),
+    methodOverride = require('method-override'),
+    config = require('./config'),
+    path = require('path');
 
 module.exports = function () {
 
-  var app = express();
-
-  config.getGlobbedFiles('./src/**/*.model.js').forEach(function (modelPath) {
-    require(path.resolve(modelPath));
+  config.getGlobbedFiles('./**/**/*.model.js').forEach(function (routePath) {
+    require(path.resolve(routePath));
   });
+
+  var app = express();
 
   app.use(function (req, res, next) {
     res.locals.url = req.protocol + ':// ' + req.headers.host + req.url;
@@ -43,18 +43,10 @@ module.exports = function () {
 
   app.disable('x-powered-by');
 
-  app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-//        res.header('Access-Control-Allow-Origin', config.crossOrigin);
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-    next();
-  });
+  app.use(require('cors')());
 
 
-  config.getGlobbedFiles('./src/**/**/*.route.js').forEach(function (routePath) {
+  config.getGlobbedFiles('./**/**/*.route.js').forEach(function (routePath) {
     require(path.resolve(routePath))(app);
   });
 
@@ -66,7 +58,7 @@ module.exports = function () {
     console.error(err.stack);
 
     // Error page
-    res.json('500', {
+    res.status(500).json({
       error: err.stack
     });
   });

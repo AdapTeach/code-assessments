@@ -1,7 +1,4 @@
 'use strict';
-Array.prototype.move = function (from, to) {
-  this.splice(to, 0, this.splice(from, 1)[0]);
-};
 require('./config/init')();
 var config = require('./config/config'),
   mongoose = require('mongoose-q')(),
@@ -9,6 +6,5 @@ var config = require('./config/config'),
     user: config.dbRoot,
     pass: config.dbPassword
   });
-var app = require('./config/express')(db);
-app.listen(config.port, config.address);
-console.log('CodeAssessments api started on port ' + config.port);
+require('./config/express')(db).listen(config.port, config.address);
+console.log('\x1b[7m', 'CodeAssessments api started on port ' + config.port);

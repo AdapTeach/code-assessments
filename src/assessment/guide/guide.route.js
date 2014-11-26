@@ -1,23 +1,52 @@
-(function() {
-  'use strict';
+var mongoose = require('mongoose-q')(require('mongoose')),
+    Guide = mongoose.model('Guide'),
+    HttpError = require('../../error/HttpError');
 
-  var guideCtrl = require('./guide.ctrl');
-
-  module.exports = function (app) {
+module.exports = function (app) {
 
     app.route('/guide')
-      .get(guideCtrl.findAll);
+        .get(function(request,response){
+            Guide.find()
+                .execQ()
+                .then(function (guides) {
+                    response.json(guides);
+                })
+                .catch(HttpError.handle(response));
+        });
 
     app.route('/assessment/:id/guide')
-      .post(guideCtrl.create)
-      .get(guideCtrl.findByAssessment);
+        .post(function(request,response){
+            Guide.find(request.params.id, request.body)
+                .execQ()
+                .then(function (guides) {
+                    response.json(guides);
+                })
+                .catch(HttpError.handle(response));
+        })
+        .get(function(request,response){
+            Guide.find({assessment: request.params.id})
+                .execQ()
+                .then(function (guides) {
+                    response.json(guides);
+                })
+                .catch(HttpError.handle(response));
+        });
 
     app.route('/assessment/:id/guide/:guideId')
-      .put(guideCtrl.update)
-      .delete(guideCtrl.remove);
-
-    app.route('/assessment/:id/guide/:index/move/:new')
-      .put(guideCtrl.move);
-
-  };
-})();
+        .put(function(request,response){
+            Guide.findOneAndUpdate({_id: request.params.guideId}, request.body)
+                .execQ()
+                .then(function () {
+                    response.json();
+                })
+                .catch(HttpError.handle(response));
+        })
+        .delete(function(request,response){
+            Guide.findOneAndRemove({_id: req.params.guideId})
+                .execQ()
+                .then(function () {
+                    response.status(200).json();
+                })
+                .catch(HttpError.handle(response));
+        });
+};

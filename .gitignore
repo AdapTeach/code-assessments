@@ -1,4 +1,6 @@
 # IDE config files
 .idea
+.openshift
 node_modules
 config/env/production.js
+npm-debug.log
