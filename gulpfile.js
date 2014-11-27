@@ -9,8 +9,12 @@ var pathToSrc = ['config/**/*.js', 'src/**/*.js', 'gulpfile.js'],
 gulp.task('default', ['dev'], function () {
 });
 
-gulp.task('dev', function () {
-    nodemon({script: 'server.js'})
+gulp.task('dev',['lint'], function () {
+    nodemon({
+        script: 'server.js',
+        ext: 'js',
+        env: {'NODE_ENV': 'development'}
+    })
         .on('change', ['lint']);
 });
 
@@ -22,9 +26,16 @@ gulp.task('lint', function () {
         .pipe(jshint.reporter('jshint-stylish'));
 });
 
-gulp.task('test', function () {
-    gulp.src(pathToTests)
-        .pipe(jasmine());
+gulp.task('test',['lint'], function () {
+    //gulp.src(pathToTests)
+    //    .pipe(jasmine());
+
+    nodemon({
+        script: 'server.js',
+        ext: 'js',
+        env: {'NODE_ENV': 'test'}
+    })
+        .on('change', ['lint']);
 });
 
 /////////////////////////////////////

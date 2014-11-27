@@ -31,19 +31,36 @@ module.exports = function (app) {
         });
 
     app.route('/assessment/:id/test/:testId')
+        .get(function(request,response){
+            Test.findOne({_id : request.params.testId})
+                .execQ()
+                .then(function (test) {
+                    if(!test){
+                        HttpError.throw(400,"The test you're looking at doesn't exist.");
+                    }
+                    response.json(test);
+                })
+                .catch(HttpError.handle(response));
+        })
         .delete(function(request,response){
             Test.findOneAndRemove({_id: request.params.testId})
                 .execQ()
-                .then(function () {
+                .then(function (nb) {
+                    if(nb===0){
+                        HttpError.throw(400,"The test you're looking at doesn't exist.");
+                    }
                     response.json();
                 })
                 .catch(HttpError.handle(response));
         })
         .put(function(request,response){
-            Test.findOneAndUpdate({_id: req.params.testId}, req.body)
+            Test.findOneAndUpdate({_id: request.params.testId}, request.body)
                 .execQ()
-                .then(function (newTest) {
-                    res.json(newTest);
+                .then(function (updatedTest) {
+                    if(!updatedTest){
+                        HttpError.throw(400,"The test you're looking at doesn't exist.");
+                    }
+                    response.json(updatedTest);
                 })
                 .catch(HttpError.handle(response));
         });

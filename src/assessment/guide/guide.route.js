@@ -16,8 +16,7 @@ module.exports = function (app) {
 
     app.route('/assessment/:id/guide')
         .post(function(request,response){
-            Guide.find(request.params.id, request.body)
-                .execQ()
+            Guide.create(request.params.id, request.body)
                 .then(function (guides) {
                     response.json(guides);
                 })
@@ -33,18 +32,35 @@ module.exports = function (app) {
         });
 
     app.route('/assessment/:id/guide/:guideId')
+        .get(function(request,response){
+            Guide.findOne({_id: request.params.guideId})
+                .execQ()
+                .then(function (guide) {
+                    if(!guide){
+                        HttpError.throw(400,"The guide you're looking at doesn't exist.");
+                    }
+                    response.json(guide);
+                })
+                .catch(HttpError.handle(response));
+        })
         .put(function(request,response){
             Guide.findOneAndUpdate({_id: request.params.guideId}, request.body)
                 .execQ()
-                .then(function () {
-                    response.json();
+                .then(function (guide) {
+                    if(!guide){
+                        HttpError.throw(400,"The guide you're looking at doesn't exist.");
+                    }
+                    response.status(200).send(guide);
                 })
                 .catch(HttpError.handle(response));
         })
         .delete(function(request,response){
-            Guide.findOneAndRemove({_id: req.params.guideId})
+            Guide.findOneAndRemove({_id: request.params.guideId})
                 .execQ()
-                .then(function () {
+                .then(function (nb) {
+                    if(nb===0){
+                        HttpError.throw(400,"The guide you're looking at doesn't exist.");
+                    }
                     response.status(200).json();
                 })
                 .catch(HttpError.handle(response));

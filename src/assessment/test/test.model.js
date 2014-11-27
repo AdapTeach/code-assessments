@@ -4,15 +4,15 @@ var q = require('q'),
     TestSchema = new Schema({
         title: {
             type: String,
-            required: 'the title is required'
+            required: 'title is required'
         },
         code: {
             type: String,
-            required: 'Code is required'
+            required: 'code is required'
         },
         expectations: [{
             type: String,
-            required: 'Expectations is required'
+            required: 'expectations is required'
         }],
         assessment: {
             type: Schema.ObjectId,
@@ -36,5 +36,5 @@ TestSchema.statics.create = function(assessmentId,test){
     return deferred.promise;
 };
 
-Test = mongoose.model('Test', TestSchema);
+var Test = mongoose.model('Test', TestSchema);
 module.exports = Test;

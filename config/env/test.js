@@ -1,5 +1,7 @@
 module.exports = {
-  db: 'mongodb://localhost/codegrader-test',
+  dbUrl: 'mongodb://localhost/code-assessments',
+  dbRoot: '',
+  dbPassword: '',
   port: 5021,
   address: "127.0.0.1"
 };
