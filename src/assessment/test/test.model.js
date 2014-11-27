@@ -23,7 +23,7 @@ var q = require('q'),
 
 TestSchema.statics.create = function(assessmentId,test){
     var deferred = q.defer();
-    var newTest = new Test(test);
+    var newTest = new this(test);
     newTest.saveQ().then(function (createdTest) {
         Assessment.findOneAndUpdate({_id: assessmentId}, {$push: {tests: createdTest._id}})
             .execQ()
@@ -36,5 +36,4 @@ TestSchema.statics.create = function(assessmentId,test){
     return deferred.promise;
 };
 
-var Test = mongoose.model('Test', TestSchema);
-module.exports = Test;
+module.exports = mongoose.model('Test', TestSchema);;

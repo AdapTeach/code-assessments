@@ -6,7 +6,8 @@ module.exports = function (app) {
 
     app.route('/test')
         .get(function(request,response){
-            Test.find()
+            Test
+                .find()
                 .execQ()
                 .then(function sendResponse(tests) {
                     res.json(tests);
@@ -15,14 +16,16 @@ module.exports = function (app) {
 
     app.route('/assessment/:id/test')
         .post(function(request,response){
-            Test.create(request.params.id, request.body)
+            Test
+                .create(request.params.id, request.body)
                 .then(function sendResponse(test){
                     response.json(test);
                 })
                 .catch(HttpError.handle(response));
         })
         .get(function(request,response){
-            Test.find({assessment: request.params.id})
+            Test
+                .find({assessment: request.params.id})
                 .execQ()
                 .then(function (tests) {
                     response.json(tests);
@@ -32,7 +35,8 @@ module.exports = function (app) {
 
     app.route('/assessment/:id/test/:testId')
         .get(function(request,response){
-            Test.findOne({_id : request.params.testId})
+            Test
+                .findOne({_id : request.params.testId})
                 .execQ()
                 .then(function (test) {
                     if(!test){
@@ -43,24 +47,28 @@ module.exports = function (app) {
                 .catch(HttpError.handle(response));
         })
         .delete(function(request,response){
-            Test.findOneAndRemove({_id: request.params.testId})
+            Test
+                .findOneAndRemove({_id: request.params.testId})
                 .execQ()
                 .then(function (nb) {
                     if(nb===0){
                         HttpError.throw(400,"The test you're looking at doesn't exist.");
                     }
-                    response.json();
+                    response.status(200).json({
+                        message : 'test successfully removed'
+                    });
                 })
                 .catch(HttpError.handle(response));
         })
         .put(function(request,response){
-            Test.findOneAndUpdate({_id: request.params.testId}, request.body)
+            Test
+                .findOneAndUpdate({_id: request.params.testId}, request.body)
                 .execQ()
                 .then(function (updatedTest) {
                     if(!updatedTest){
                         HttpError.throw(400,"The test you're looking at doesn't exist.");
                     }
-                    response.json(updatedTest);
+                    response.status(200).json(updatedTest);
                 })
                 .catch(HttpError.handle(response));
         });

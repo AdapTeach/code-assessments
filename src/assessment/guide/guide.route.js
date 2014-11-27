@@ -6,62 +6,70 @@ module.exports = function (app) {
 
     app.route('/guide')
         .get(function(request,response){
-            Guide.find()
+            Guide
+                .find()
                 .execQ()
                 .then(function (guides) {
-                    response.json(guides);
+                    response.status(200).json(guides);
                 })
                 .catch(HttpError.handle(response));
         });
 
     app.route('/assessment/:id/guide')
         .post(function(request,response){
-            Guide.create(request.params.id, request.body)
+            Guide
+                .create(request.params.id, request.body)
                 .then(function (guides) {
-                    response.json(guides);
+                    response.status(200).json(guides);
                 })
                 .catch(HttpError.handle(response));
         })
         .get(function(request,response){
-            Guide.find({assessment: request.params.id})
+            Guide
+                .find({assessment: request.params.id})
                 .execQ()
                 .then(function (guides) {
-                    response.json(guides);
+                    response.status(200).json(guides);
                 })
                 .catch(HttpError.handle(response));
         });
 
     app.route('/assessment/:id/guide/:guideId')
         .get(function(request,response){
-            Guide.findOne({_id: request.params.guideId})
+            Guide
+                .findOne({_id: request.params.guideId})
                 .execQ()
                 .then(function (guide) {
                     if(!guide){
                         HttpError.throw(400,"The guide you're looking at doesn't exist.");
                     }
-                    response.json(guide);
+                    response.status(200).json(guide);
                 })
                 .catch(HttpError.handle(response));
         })
         .put(function(request,response){
-            Guide.findOneAndUpdate({_id: request.params.guideId}, request.body)
+            Guide
+                .findOneAndUpdate({_id: request.params.guideId}, request.body)
                 .execQ()
                 .then(function (guide) {
                     if(!guide){
                         HttpError.throw(400,"The guide you're looking at doesn't exist.");
                     }
-                    response.status(200).send(guide);
+                    response.status(200).json(guide);
                 })
                 .catch(HttpError.handle(response));
         })
         .delete(function(request,response){
-            Guide.findOneAndRemove({_id: request.params.guideId})
+            Guide
+                .findOneAndRemove({_id: request.params.guideId})
                 .execQ()
                 .then(function (nb) {
                     if(nb===0){
                         HttpError.throw(400,"The guide you're looking at doesn't exist.");
                     }
-                    response.status(200).json();
+                    response.status(200).json({
+                        message : 'guide successfully removed'
+                    });
                 })
                 .catch(HttpError.handle(response));
         });

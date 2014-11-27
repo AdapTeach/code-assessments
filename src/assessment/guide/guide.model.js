@@ -20,7 +20,7 @@ var q = require('q'),
 
 GuideSchema.statics.create = function(assessmentId,guide){
     var deferred = q.defer();
-    var newGuide = new this.model('Guide')(guide);
+    var newGuide = new this(guide);
     newGuide.saveQ().then(function (guide) {
         Assessment.findOneAndUpdate({_id: assessmentId}, {$push: {guides: guide}})
             .execQ()
@@ -33,5 +33,4 @@ GuideSchema.statics.create = function(assessmentId,guide){
     return deferred.promise;
 };
 
-var Guide = mongoose.model('Guide', GuideSchema);
-module.exports = Guide;
+module.exports = mongoose.model('Guide', GuideSchema);;
