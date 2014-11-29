@@ -19,7 +19,9 @@
     "lodash": "*",
     "glob": "*",
     "compression": "*",
-    "cors" : "*"
+    "cors" : "*",
+    "jwt-simple" : "*",
+    "moment" : "*"
   },
   "devDependencies": {
     "gulp": "*",

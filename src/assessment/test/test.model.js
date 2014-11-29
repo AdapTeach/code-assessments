@@ -36,4 +36,4 @@ TestSchema.statics.create = function(assessmentId,test){
     return deferred.promise;
 };
 
-module.exports = mongoose.model('Test', TestSchema);;
+module.exports = mongoose.model('Test', TestSchema);

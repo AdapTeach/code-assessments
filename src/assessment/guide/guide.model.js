@@ -33,4 +33,4 @@ GuideSchema.statics.create = function(assessmentId,guide){
     return deferred.promise;
 };
 
-module.exports = mongoose.model('Guide', GuideSchema);;
+module.exports = mongoose.model('Guide', GuideSchema);

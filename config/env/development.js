@@ -3,5 +3,6 @@ module.exports = {
   dbRoot: '',
   dbPassword: '',
   port: 5011,
-  address: "127.0.0.1"
+  address: "127.0.0.1",
+  authToken : 'my-secret'
 };

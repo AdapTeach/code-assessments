@@ -25,7 +25,7 @@ module.exports = function (app) {
                .then(function(compilationUnit){
                    response.status(200).json(compilationUnit);
                })
-               .catch(HttpError.handle(response))
+               .catch(HttpError.handle(response));
         });
 
     app.route('/assessment/:id/compilationunit/:cuId')

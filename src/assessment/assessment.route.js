@@ -8,7 +8,7 @@ module.exports = function (app) {
             Assessment.find()
                 .execQ()
                 .then(function sendResponse(assessments){
-                    response.status().json(assessments);
+                    response.status(200).json(assessments);
                 })
                 .catch(HttpError.handle(response));
         })
