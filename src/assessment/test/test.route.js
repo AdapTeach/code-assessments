@@ -1,11 +1,12 @@
 var mongoose = require('mongoose-q')(require('mongoose')),
     Test = mongoose.model('Test'),
-    HttpError = require('../../error/HttpError');
+    HttpError = require('../../error/HttpError'),
+    ensureAuthenticated = require('../../auth/auth.middleware').ensureAuthenticated;
 
 module.exports = function (app) {
 
     app.route('/test')
-        .get(function(request,response){
+        .get(ensureAuthenticated,function(request,response){
             Test
                 .find()
                 .execQ()
@@ -15,7 +16,9 @@ module.exports = function (app) {
         });
 
     app.route('/assessment/:id/test')
-        .post(function(request,response){
+        .post(ensureAuthenticated,function(request,response){
+            request.body.assessment = request.params.id;
+            request.body.creator = request.user._id;
             Test
                 .create(request.params.id, request.body)
                 .then(function sendResponse(test){
@@ -23,17 +26,30 @@ module.exports = function (app) {
                 })
                 .catch(HttpError.handle(response));
         })
-        .get(function(request,response){
+        .get(ensureAuthenticated,function(request,response){
             Test
                 .find({assessment: request.params.id})
                 .execQ()
                 .then(function (tests) {
+                    console.log(tests)
                     response.json(tests);
+                })
+                .catch(HttpError.handle(response));
+        })
+        .put(ensureAuthenticated,function(request,response){
+            Test
+                .findOneAndUpdate({_id: request.body._id}, request.body)
+                .execQ()
+                .then(function (updatedTest) {
+                    if(!updatedTest){
+                        HttpError.throw(400,"The test you're looking at doesn't exist.");
+                    }
+                    response.status(200).json(updatedTest);
                 })
                 .catch(HttpError.handle(response));
         });
 
-    app.route('/assessment/:id/test/:testId')
+    app.route(ensureAuthenticated,'/assessment/:id/test/:testId')
         .get(function(request,response){
             Test
                 .findOne({_id : request.params.testId})
@@ -46,7 +62,7 @@ module.exports = function (app) {
                 })
                 .catch(HttpError.handle(response));
         })
-        .delete(function(request,response){
+        .delete(ensureAuthenticated,function(request,response){
             Test
                 .findOneAndRemove({_id: request.params.testId})
                 .execQ()
@@ -60,7 +76,7 @@ module.exports = function (app) {
                 })
                 .catch(HttpError.handle(response));
         })
-        .put(function(request,response){
+        .put(ensureAuthenticated,function(request,response){
             Test
                 .findOneAndUpdate({_id: request.params.testId}, request.body)
                 .execQ()

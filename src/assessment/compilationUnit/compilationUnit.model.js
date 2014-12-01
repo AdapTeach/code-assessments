@@ -4,20 +4,25 @@ var q = require('q'),
     CompilationUnitSchema = new Schema({
         name: {
             type: String,
-            required : 'name is required'
+            required: 'name is required'
         },
         code: {
             type: String,
-            required : 'code is required'
+            required: 'code is required'
         },
-        type : {
-            type : String,
-            required : 'type is required'
+        type: {
+            type: String,
+            required: 'type is required'
+        },
+        creator: {
+            type: Schema.ObjectId,
+            ref: 'User',
+            required: 'a CompilationUnit must belong to an user'
         },
         assessment: {
             type: Schema.ObjectId,
             ref: 'Assessment',
-            required : 'a CompilationUnit must belong to an assessment'
+            required: 'a CompilationUnit must belong to an assessment'
         }
     }),
     Assessment = mongoose.model('Assessment');

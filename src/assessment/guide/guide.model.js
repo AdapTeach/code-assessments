@@ -26,8 +26,8 @@ var q = require('q'),
 GuideSchema.statics.create = function(assessmentId,guide){
     var deferred = q.defer();
     var newGuide = new this(guide);
-    newGuide.saveQ().then(function (guide) {
-        Assessment.findOneAndUpdate({_id: assessmentId}, {$push: {guides: guide}})
+    newGuide.saveQ().then(function (createdGuide) {
+        Assessment.findOneAndUpdate({_id: assessmentId}, {$push: {guides: createdGuide}})
             .execQ()
             .then(function () {
                 deferred.resolve(guide);
