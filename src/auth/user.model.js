@@ -29,7 +29,7 @@ userSchema.methods.createJwtToken = function () {
         iat: moment().valueOf(),
         exp: moment().add(7, 'days').valueOf()
     };
-    return jwt.encode(payload, config.authToken);
+    return jwt.encode(payload, config.TOKEN_SECRET);
 };
 
 userSchema.methods.authData = function () {

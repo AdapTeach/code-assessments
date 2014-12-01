@@ -14,6 +14,11 @@ var q = require('q'),
             type: Schema.ObjectId,
             ref: 'Assessment',
             required : 'a guide must belong to an assessment'
+        },
+        creator: {
+            type: Schema.ObjectId,
+            ref: 'User',
+            required : 'a guide must belong to a user'
         }
     }),
     Assessment = mongoose.model('Assessment');

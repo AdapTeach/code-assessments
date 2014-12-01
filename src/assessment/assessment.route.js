@@ -1,29 +1,47 @@
 var Assessment = require('./assessment.model'),
-    HttpError = require('../error/HttpError');
+    HttpError = require('../error/HttpError'),
+    ensureAuthenticated = require('../auth/auth.middleware').ensureAuthenticated;
 
 module.exports = function (app) {
 
     app.route('/assessment')
-        .get(function(request,response){
-            Assessment.find()
+        .get(ensureAuthenticated,function(request,response){
+            Assessment.find({ creator : request.user._id })
                 .execQ()
                 .then(function sendResponse(assessments){
                     response.status(200).json(assessments);
                 })
                 .catch(HttpError.handle(response));
         })
-        .post(function(request,response){
+        .post(ensureAuthenticated,function(request,response){
+            console.log(request.body,request.user)
             var assess = new Assessment(request.body);
+            assess.creator = request.user._id;
             assess
                 .saveQ()
                 .then(function sendResponse(assess) {
                     response.status(200).json(assess);
                 })
                 .catch(HttpError.handle(response));
+        })
+        .put(ensureAuthenticated,function(request,response){
+            Assessment
+                .findOneAndUpdateQ({_id: request.body._id}, request.body)
+                .then(function sendResponse(assessment) {
+                    if(!assessment){
+                        HttpError.throw(400,"The assessment you're looking at doesn't exist.");
+                    }
+                    var data = {
+                        _id : assessment._id,
+                        title : assessment.title
+                    };
+                    response.json(data);
+                })
+                .fail(HttpError.handle(response));
         });
 
     app.route('/assessment/:id')
-        .get(function(request,response){
+        .get(ensureAuthenticated,function(request,response){
             Assessment
                 .findOne({_id: request.params.id})
                 .populate('guides')
@@ -36,7 +54,7 @@ module.exports = function (app) {
                     response.status(200).json(assessment);
                 }).catch(HttpError.handle(response));
         })
-        .put(function(request,response){
+        .put(ensureAuthenticated,function(request,response){
             Assessment
                 .findOneAndUpdateQ({_id: request.params.id}, request.body)
                 .then(function sendResponse(assessment) {
@@ -47,7 +65,7 @@ module.exports = function (app) {
                 })
                 .fail(HttpError.handle(response));
         })
-        .delete(function(request,response){
+        .delete(ensureAuthenticated,function(request,response){
             Assessment
                 .remove({_id: request.params.id}).execQ()
                 .then(function sendResponse(nb) {
@@ -63,7 +81,7 @@ module.exports = function (app) {
 
 
     //change the index of a guide in an assessment's array of guide
-    app.route('/assessment/:id/guide/move/:from/to/:to')
+    app.route(ensureAuthenticated,'/assessment/:id/guide/move/:from/to/:to')
         .put(function(request,response){
             Assessment
                 .findOne({_id: request.params.id})
@@ -82,7 +100,7 @@ module.exports = function (app) {
     //tips management
     //change the index of a tip in an assessment's array of tip
     app.route('/assessment/:id/tip/move/:from/to/:to')
-        .put(function(request,response){
+        .put(ensureAuthenticated,function(request,response){
             Assessment
                 .findOne({_id: request.params.id})
                 .execQ()
@@ -98,7 +116,7 @@ module.exports = function (app) {
                 .catch(HttpError.handle(response));
         });
 
-    app.route('/assessment/:id/tip')
+    app.route(ensureAuthenticated,'/assessment/:id/tip')
         .post(function(request,response){
             Assessment
                 .findOneAndUpdate({ _id : request.params.id },{ $push : { tips : request.body } })
@@ -110,7 +128,7 @@ module.exports = function (app) {
         });
 
 
-    app.route('/assessment/:id/tip/:index')
+    app.route(ensureAuthenticated,'/assessment/:id/tip/:index')
         .delete(function(request,response){
             Assessment
                 .findOneAndUpdate({ _id : request.params.id },{ $pull : { tips : request.body } })

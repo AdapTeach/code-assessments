@@ -4,5 +4,5 @@ module.exports = {
   dbPassword: '',
   port: 5011,
   address: "127.0.0.1",
-  authToken : 'my-secret'
+  TOKEN_SECRET : 'my-secret'
 };

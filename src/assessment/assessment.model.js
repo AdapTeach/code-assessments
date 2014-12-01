@@ -2,11 +2,6 @@ var q = require('q'),
     mongoose = require("mongoose-q")(require('mongoose')),
     Schema = mongoose.Schema,
     AssessmentSchema = new Schema({
-        id : {
-            type: String,
-            unique: true,
-            required : 'id is required'
-        },
         title: {
             type: String,
             unique: true,
@@ -22,8 +17,8 @@ var q = require('q'),
         },
         creator : {
             type : Schema.ObjectId,
-            ref : 'User'
-            //required : 'creator is required'
+            ref : 'User',
+            required : 'creator is required'
         },
         tips: [],
         guides: [{
@@ -37,7 +32,6 @@ var q = require('q'),
         providedCompilationUnits: [],
         compilationUnitsToSubmit: []
     });
-
 
 AssessmentSchema.methods.moveTips = function(from, to){
     var deferred = q.defer();
