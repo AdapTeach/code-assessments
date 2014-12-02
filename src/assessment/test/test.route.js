@@ -31,7 +31,6 @@ module.exports = function (app) {
                 .find({assessment: request.params.id})
                 .execQ()
                 .then(function (tests) {
-                    console.log(tests)
                     response.json(tests);
                 })
                 .catch(HttpError.handle(response));

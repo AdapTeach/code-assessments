@@ -31,7 +31,6 @@ module.exports = function (app) {
                .catch(HttpError.handle(response));
         })
         .put(ensureAuthenticated,function (request, response) {
-            console.log(request.body)
             CompilationUnit
                 .findOneAndUpdate({_id: request.body._id}, request.body)
                 .execQ()
