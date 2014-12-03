@@ -1,8 +1,10 @@
 module.exports = {
-  authUrl: '',
-  dbUrl: 'mongodb://...',
-  dbRoot: '',
-  dbPassword: '',
-  port: '',
-  address: ""
+    authUrl: '',
+    clientUrl: 'http://localhost:5000',
+    port: '',
+    db: {
+        address: 'mongodb://...',
+        user: '',
+        pass: ''
+    }
 };
