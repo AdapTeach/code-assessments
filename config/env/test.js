@@ -1,5 +1,6 @@
 module.exports = {
   dbUrl: 'mongodb://localhost/code-assessments',
+  authUrl: '',
   dbRoot: '',
   dbPassword: '',
   port: 5021,

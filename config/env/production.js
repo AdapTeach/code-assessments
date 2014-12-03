@@ -1,4 +1,5 @@
 module.exports = {
+  authUrl: 'learnerprofile-adapteach.rhcloud.com',
   dbUrl: 'mongodb://' + process.env.OPENSHIFT_MONGODB_DB_HOST + ':' + process.env.OPENSHIFT_MONGODB_DB_PORT + '/codeassessments',
   dbRoot: 'admin',
   dbPassword: 'KAPDyGr4G2Rp',
