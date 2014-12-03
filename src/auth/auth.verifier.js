@@ -4,7 +4,7 @@ var config = require('../../config/config'),
 
 authVerifier.verify = function (assertion) {
     var options = {
-        url: config.authUrl,
+        url: config.authUrl+'/login',
         method: 'POST',
         body: [
             JSON.stringify({
@@ -35,9 +35,7 @@ authVerifier.decodeToken = function (token) {
     };
     return http.request(options)
         .then(function (verificationResult) {
-            return verificationResult.body.read().then(function (body) {
-                return JSON.parse(body);
-            });
+            return verificationResult.body.read();
         });
 };
 

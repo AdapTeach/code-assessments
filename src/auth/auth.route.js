@@ -1,5 +1,4 @@
 var authVerifier = require('./auth.verifier'),
-    User = require('./user.model'),
     ensureAuthenticated = require('./auth.middleware').ensureAuthenticated;
 
 
@@ -7,15 +6,8 @@ module.exports = function (app) {
 
     app.post('/login', function (request, response) {
         authVerifier.verify(request.body.assertion)
-            .then(function authenticateIfOkay(verificationResult) {
-                if (verificationResult.status === 'okay') {
-                    var email = verificationResult.email;
-                    return User.authenticate(email).then(function (authData) {
-                        response.json(authData);
-                    });
-                } else {
-                    response.status(401).send(verificationResult.status);
-                }
+            .then(function authenticateIfOkay(user) {
+                response.json(user);
             })
             .catch(function (error) {
                 console.log(error);

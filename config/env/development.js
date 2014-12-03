@@ -1,6 +1,6 @@
 module.exports = {
   dbUrl: 'mongodb://localhost/code-assessments',
-  authUrl: '',
+  authUrl: 'http://learnerprofile-adapteach.rhcloud.com',
   dbRoot: '',
   dbPassword: '',
   port: 5011,
