@@ -1,3 +1,5 @@
+var http = require('q-io/http');
+
 var Assessment = require('./assessment.model'),
     HttpError = require('../error/HttpError'),
     ensureAuthenticated = require('../auth/auth.middleware').ensureAuthenticated;
