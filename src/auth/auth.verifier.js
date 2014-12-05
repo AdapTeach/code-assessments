@@ -38,11 +38,8 @@ authVerifier.decodeToken = function (token) {
     http.request(options)
         .then(function (verificationResult) {
             verificationResult.body.read().then(function (body) {
-                console.log('verify result', body);
                 deferred.resolve(JSON.parse(body));
             });
-        }).catch(function(err){
-           deferred.reject(err);
         });
     return deferred.promise;
 };

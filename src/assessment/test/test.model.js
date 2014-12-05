@@ -6,7 +6,7 @@ var q = require('q'),
             type: String,
             required: 'title is required'
         },
-        code: {
+        initializationCode: {
             type: String,
             required: 'code is required'
         },

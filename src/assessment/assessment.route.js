@@ -100,47 +100,32 @@ module.exports = function (app) {
                 .catch(HttpError.handle(response));
         });
 
-    //tips management
-    //change the index of a tip in an assessment's array of tip
-    app.route('/assessment/:id/tip/move/:from/to/:to')
-        .put(ensureAuthenticated,function(request,response){
-            Assessment
-                .findOne({_id: request.params.id})
-                .execQ()
-                .then(function (assessment) {
-                    if(!assessment){
-                        HttpError.throw(400,"The assessment you're looking at doesn't exist.");
-                    }
-                    assessment.moveTips(request.params.from, request.params.to);
-                })
-                .then(function(){
-                    response.status(200).send();
-                })
-                .catch(HttpError.handle(response));
-        });
-
-    app.route(ensureAuthenticated,'/assessment/:id/tip')
-        .post(function(request,response){
-            Assessment
-                .findOneAndUpdate({ _id : request.params.id },{ $push : { tips : request.body } })
-                .execQ()
-                .then(function(){
-                    response.status(200).send();
-                })
-                .catch(HttpError.handle(response));
-        });
-
-
-    app.route(ensureAuthenticated,'/assessment/:id/tip/:index')
-        .delete(function(request,response){
-            Assessment
-                .findOneAndUpdate({ _id : request.params.id },{ $pull : { tips : request.body } })
-                .execQ()
-                .then(function(){
-                    response.status(200).json({
-                        message : 'success'
+    app.post('/assessment/:id/submission', function (request, response) {
+        Assessment
+            .findOne({_id: request.params.id})
+            .execQ()
+            .then(function (assessment) {
+                var submittedCompilationUnits = request.body.compilationUnits;
+                var options = {
+                    //url: 'http://localhost:5020/v1/',
+                    url: 'http://54.171.154.216:5020/v1/',
+                    method: 'POST',
+                    body: [
+                        JSON.stringify({
+                            assessment: assessment,
+                            submittedCompilationUnits: submittedCompilationUnits
+                        })
+                    ]
+                };
+                return http.request(http.normalizeRequest(options))
+                    .then(function (submissionResponse) {
+                        return submissionResponse.body.read().then(function (body) {
+                            response
+                                .status(submissionResponse.status)
+                                .json(JSON.parse(body));
+                        });
                     });
-                })
-                .catch(HttpError.handle(response));
-        });
+            })
+            .catch(HttpError.handle(response));
+    })
 };

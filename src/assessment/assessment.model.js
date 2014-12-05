@@ -19,7 +19,6 @@ var q = require('q'),
             type : String,
             required : 'creator is required'
         },
-        tips: [],
         guides: [{
             type: Schema.ObjectId,
             ref: 'Guide'
