@@ -14,6 +14,7 @@ module.exports = function (app) {
                 .catch(HttpError.handle(response));
         })
         .post(ensureAuthenticated,function(request,response){
+            console.log(request.user,request.body);
             var assess = new Assessment(request.body);
             assess.creator = request.user._id;
             assess

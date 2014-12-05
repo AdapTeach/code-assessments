@@ -15,8 +15,7 @@ var q = require('q'),
             required: 'type is required'
         },
         creator: {
-            type: Schema.ObjectId,
-            ref: 'User',
+            type: String,
             required: 'a CompilationUnit must belong to an user'
         },
         assessment: {

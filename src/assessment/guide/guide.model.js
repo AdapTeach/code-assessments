@@ -16,8 +16,7 @@ var q = require('q'),
             required : 'a guide must belong to an assessment'
         },
         creator: {
-            type: Schema.ObjectId,
-            ref: 'User',
+            type: String,
             required : 'a guide must belong to a user'
         }
     }),

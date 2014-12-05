@@ -1,5 +1,6 @@
 var config = require('../../config/config'),
     http = require('q-io/http'),
+    q = require('q'),
     authVerifier = {};
 
 authVerifier.verify = function (assertion) {
@@ -9,7 +10,7 @@ authVerifier.verify = function (assertion) {
         body: [
             JSON.stringify({
                 assertion: assertion,
-                audience: 'http://localhost:5000'
+                audience: config.clientUrl
             })
         ],
         headers: {
@@ -25,18 +26,24 @@ authVerifier.verify = function (assertion) {
 };
 
 authVerifier.decodeToken = function (token) {
+    var deferred = q.defer();
     var options = {
         url: config.authUrl + '/me',
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorisation': 'Bearer ' + token
+            'Authorization': 'Bearer ' + token
         }
     };
-    return http.request(options)
+    http.request(options)
         .then(function (verificationResult) {
-            return verificationResult.body.read();
+            verificationResult.body.read().then(function (body) {
+                deferred.resolve(JSON.parse(body));
+            });
+        }).catch(function(err){
+           deferred.reject(err);
         });
+    return deferred.promise;
 };
 
 module.exports = authVerifier;

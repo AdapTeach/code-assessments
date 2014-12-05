@@ -16,8 +16,7 @@ var q = require('q'),
             required: 'startCode is required'
         },
         creator : {
-            type : Schema.ObjectId,
-            ref : 'User',
+            type : String,
             required : 'creator is required'
         },
         tips: [],

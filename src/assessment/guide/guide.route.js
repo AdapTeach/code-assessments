@@ -26,7 +26,7 @@ module.exports = function (app) {
                     var data = {
                         _id : guide._id,
                         title : guide.title
-                    }
+                    };
                     response.status(200).json(data);
                 })
                 .catch(HttpError.handle(response));
