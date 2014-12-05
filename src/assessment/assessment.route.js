@@ -25,8 +25,10 @@ module.exports = function (app) {
                 .catch(HttpError.handle(response));
         })
         .put(ensureAuthenticated,function(request,response){
+            var id = request.body._id;
+            delete request.body._id;
             Assessment
-                .findOneAndUpdateQ({_id: request.body._id}, request.body)
+                .findOneAndUpdateQ({_id: id}, request.body)
                 .then(function sendResponse(assessment) {
                     if(!assessment){
                         HttpError.throw(400,"The assessment you're looking at doesn't exist.");
@@ -55,6 +57,7 @@ module.exports = function (app) {
                 }).catch(HttpError.handle(response));
         })
         .put(ensureAuthenticated,function(request,response){
+            delete request.body._id;
             Assessment
                 .findOneAndUpdateQ({_id: request.params.id}, request.body)
                 .then(function sendResponse(assessment) {

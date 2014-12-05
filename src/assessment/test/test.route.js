@@ -36,8 +36,10 @@ module.exports = function (app) {
                 .catch(HttpError.handle(response));
         })
         .put(ensureAuthenticated,function(request,response){
+            var id = request.body._id;
+            delete request.body._id;
             Test
-                .findOneAndUpdate({_id: request.body._id}, request.body)
+                .findOneAndUpdate({_id: id}, request.body)
                 .execQ()
                 .then(function (updatedTest) {
                     if(!updatedTest){
@@ -76,6 +78,7 @@ module.exports = function (app) {
                 .catch(HttpError.handle(response));
         })
         .put(ensureAuthenticated,function(request,response){
+            delete request.body._id;
             Test
                 .findOneAndUpdate({_id: request.params.testId}, request.body)
                 .execQ()

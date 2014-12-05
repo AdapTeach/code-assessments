@@ -31,8 +31,10 @@ module.exports = function (app) {
                .catch(HttpError.handle(response));
         })
         .put(ensureAuthenticated,function (request, response) {
+            var id = request.body._id;
+            delete request.body._id;
             CompilationUnit
-                .findOneAndUpdate({_id: request.body._id}, request.body)
+                .findOneAndUpdate({_id: id}, request.body)
                 .execQ()
                 .then(function (compilationUnit) {
                     if(!compilationUnit){
@@ -68,6 +70,7 @@ module.exports = function (app) {
                 .catch(HttpError.handle(response));
         })
         .put(ensureAuthenticated,function (request, response) {
+            delete request.body._id;
             CompilationUnit
                 .findOneAndUpdate({_id: request.params.cuId}, request.body)
                 .execQ()

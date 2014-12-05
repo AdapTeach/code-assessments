@@ -32,8 +32,9 @@ module.exports = function (app) {
                 .catch(HttpError.handle(response));
         })
         .put(ensureAuthenticated,function(request,response){
+            delete request.body._id;
             Guide
-                .findOneAndUpdate({_id: request.body._id}, request.body)
+                .findOneAndUpdate({_id: id}, request.body)
                 .execQ()
                 .then(function (guide) {
                     if(!guide){
@@ -67,6 +68,7 @@ module.exports = function (app) {
                 .catch(HttpError.handle(response));
         })
         .put(ensureAuthenticated,function(request,response){
+            delete request.body._id;
             Guide
                 .findOneAndUpdate({_id: request.params.guideId}, request.body)
                 .execQ()

@@ -35,7 +35,6 @@ authVerifier.decodeToken = function (token) {
             'Authorization': 'Bearer ' + token
         }
     };
-    console.log('decodeToken pre');
     http.request(options)
         .then(function (verificationResult) {
             verificationResult.body.read().then(function (body) {
