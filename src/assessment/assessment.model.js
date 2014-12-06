@@ -11,10 +11,6 @@ var q = require('q'),
             type: String,
             required: 'instructions are required'
         },
-        startCode: {
-            type: String,
-            required: 'startCode is required'
-        },
         creator : {
             type : String,
             required : 'creator is required'
