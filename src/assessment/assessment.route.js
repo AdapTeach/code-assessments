@@ -48,10 +48,10 @@ module.exports = function (app) {
         .get(ensureAuthenticated,function(request,response){
             Assessment
                 .findOne({_id: request.params.id})
-                .populate('guides')
-                .populate('tests')
+                .populate('providedCompilationUnits compilationUnitsToSubmit tests guides')
                 .execQ()
                 .then(function sendResponse(assessment) {
+                    console.log(assessment)
                     if(!assessment){
                         HttpError.throw(400,"The assessment you're looking at doesn't exist.");
                     }
@@ -105,8 +105,12 @@ module.exports = function (app) {
     app.post('/assessment/:id/submission', function (request, response) {
         Assessment
             .findOne({_id: request.params.id})
+            .populate('compilationUnitsToSubmit')
+            .populate('providedCompilationUnits')
             .execQ()
             .then(function (assessment) {
+                console.log(assessment);
+                console.log(request.body);
                 var submittedCompilationUnits = request.body.compilationUnits;
                 var options = {
                     //url: 'http://localhost:5020/v1/',
@@ -122,6 +126,7 @@ module.exports = function (app) {
                 return http.request(http.normalizeRequest(options))
                     .then(function (submissionResponse) {
                         return submissionResponse.body.read().then(function (body) {
+                            console.log(body);
                             response
                                 .status(submissionResponse.status)
                                 .json(JSON.parse(body));
@@ -129,5 +134,5 @@ module.exports = function (app) {
                     });
             })
             .catch(HttpError.handle(response));
-    })
+    });
 };

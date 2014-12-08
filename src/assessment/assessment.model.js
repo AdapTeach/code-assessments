@@ -23,21 +23,15 @@ var q = require('q'),
             type: Schema.ObjectId,
             ref: 'Test'
         }],
-        providedCompilationUnits: [],
-        compilationUnitsToSubmit: []
+        providedCompilationUnits: [{
+            type: Schema.ObjectId,
+            ref: 'CompilationUnit'
+        }],
+        compilationUnitsToSubmit: [{
+            type: Schema.ObjectId,
+            ref: 'CompilationUnit'
+        }]
     });
-
-AssessmentSchema.methods.moveTips = function(from, to){
-    var deferred = q.defer();
-    this.tips.move(from,to);
-    this.save(function(err){
-        if(err){
-            deferred.reject(err);
-        }
-        deferred.resolve();
-    });
-    return deferred.promise;
-};
 
 AssessmentSchema.methods.moveGuide = function(from, to){
     var deferred = q.defer();
