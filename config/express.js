@@ -36,7 +36,7 @@ module.exports = function () {
     }
 
     app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded());
+    //app.use(bodyParser.urlencoded());
     app.use(methodOverride());
 
     app.use(require('cors')());

@@ -1,6 +1,7 @@
 var http = require('q-io/http');
 
-var Assessment = require('./assessment.model'),
+var config = require('../../config/config'),
+    Assessment = require('./assessment.model'),
     HttpError = require('../error/HttpError'),
     ensureAuthenticated = require('../auth/auth.middleware').ensureAuthenticated;
 
@@ -111,8 +112,7 @@ module.exports = function (app) {
             .then(function (assessment) {
                 var submittedCompilationUnits = request.body.submittedCompilationUnits;
                 var options = {
-                    url: 'http://localhost:5020/v1/',
-                    //url: 'http://54.171.154.216:5020/v1/',
+                    url: config.codeAssesserJavaUrl,
                     method: 'POST',
                     body: [
                         JSON.stringify({
