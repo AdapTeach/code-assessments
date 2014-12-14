@@ -10,10 +10,10 @@ var q = require('q'),
             type: String,
             required: 'code is required'
         },
-        expectations: [{
+        assertions: [{
             type: String,
-            required: 'expectations is required'
-        }],
+            required: 'assertions is required'
+        }], // TODO assertions can not be empty
         assessment: {
             type: Schema.ObjectId,
             ref: 'Assessment'
@@ -21,7 +21,7 @@ var q = require('q'),
     }),
     Assessment = mongoose.model('Assessment');
 
-TestSchema.statics.create = function(assessmentId,test){
+TestSchema.statics.create = function (assessmentId, test) {
     var deferred = q.defer();
     var newTest = new this(test);
     newTest.saveQ().then(function (createdTest) {
