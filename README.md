@@ -41,11 +41,22 @@ Typically, code in ``initializationCode`` will call the submitted code and store
 
 ### Submission
 
-The code-assessments module sends POST requests to the respective code-assesser-[language] projects. For example, when a learner submits a solution for a java assessment, a request is sent to code-assesser-java. 
+The code-assessments module send POST requests to the respective code-assesser-[language] modules. For example, when a learner submits a solution for a java assessment, a request is sent to code-assesser-java. 
 
 The body of such a request is a Submission, and it has the following properties :
 -   ``assessment`` the complete assessment for which the submission has been made
 -   ``submittedCompilationUnits`` the same compilation units found in the ``compilationUnitsToSubmit`` array, most probably modified by the learner in his attempt to submit a correct solution
+
+
+### Submission Result
+
+The code-assesser-[language] modules are expected to respond to POST requests in a standardized way.
+
+A Submission Result has the following properties :
+-   ``pass`` a boolean informing if the submission was correct (passed all tests) or not
+-   ``compilationErrors`` an array of Strings listing all compilation errors, if any
+-   ``exceptionMessage`` the message any eventual exception throw by the submitted code, if any 
+-   ``failedTestMessages`` an array consisting of the failed test titles at least, or possibly richer messages (if assertion libraries are used) 
 
 
 ### Example Assessment
