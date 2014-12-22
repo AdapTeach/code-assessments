@@ -1,15 +1,15 @@
 var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
-    jasmine = require('jasmine-node'),
+    jasmine = require('gulp-jasmine'),
     nodemon = require('gulp-nodemon');
 
 var pathToSrc = ['config/**/*.js', 'src/**/*.js', 'gulpfile.js'],
-    pathToTests = 'test/';
+    pathToTests = 'test/**/*';
 
 gulp.task('default', ['dev'], function () {
 });
 
-gulp.task('dev',['lint'], function () {
+gulp.task('dev', ['lint'], function () {
     nodemon({
         script: 'server.js',
         ext: 'js',
@@ -26,16 +26,9 @@ gulp.task('lint', function () {
         .pipe(jshint.reporter('jshint-stylish'));
 });
 
-gulp.task('test',['lint'], function () {
-    //gulp.src(pathToTests)
-    //    .pipe(jasmine());
-
-    nodemon({
-        script: 'server.js',
-        ext: 'js',
-        env: {'NODE_ENV': 'test'}
-    })
-        .on('change', ['lint']);
+gulp.task('test', ['lint'], function () {
+    gulp.src(pathToTests)
+        .pipe(jasmine());
 });
 
 /////////////////////////////////////
