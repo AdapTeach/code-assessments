@@ -1,6 +1,8 @@
 code-assessments
 ===========
 
+TODO : Make it a koa middleware
+
 API Server providing CRUD functionality for assessments
 
 ### Compilation Unit
