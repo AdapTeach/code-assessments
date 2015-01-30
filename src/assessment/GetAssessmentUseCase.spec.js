@@ -1,4 +1,5 @@
 var useCase = require('./GetAssessmentUseCase');
+var ErrorType = require('../error/ErrorType');
 
 describe('GetAssessmentUseCase', function () {
 
@@ -15,18 +16,11 @@ describe('GetAssessmentUseCase', function () {
         request = new useCase.request();
     });
 
-    describe('given assessment does not exist', function () {
-        var missingId = 1234567;
-        beforeEach(function () {
-            request.id = missingId;
-        });
-
-        it('responds with no assessment', function () {
-            var response = interactor.execute(request);
-            expect(response.assessment).toBeUndefined();
-        });
-
-
+    it('responds with error when no assessment exists for id', function () {
+        request.id = 12345679;
+        var response = interactor.execute(request);
+        expect(response.assessment).toBeUndefined();
+        expect(response.error.type).toBe(ErrorType.ENTITY_NOT_FOUND);
     });
 
     describe('given assessment exists', function () {
@@ -34,18 +28,16 @@ describe('GetAssessmentUseCase', function () {
             id: 1234567
         };
         beforeEach(function () {
-            gateway.get = function () {
-                return assessment;
-            };
+            spyOn(gateway, 'get').and.returnValue(assessment);
         });
 
         it('responds with assessment', function () {
             request.assessmentId = assessment.id;
             var response = interactor.execute(request);
+            expect(gateway.get).toHaveBeenCalledWith(assessment.id);
             expect(response.assessment).toBe(assessment);
         });
 
     });
 
-})
-;
+});

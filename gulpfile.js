@@ -1,7 +1,7 @@
 var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     jasmine = require('gulp-jasmine'),
-    nodemon = require('gulp-nodemon')
+    nodemon = require('gulp-nodemon');
 
 var pathToSrc = ['config/**/*.js', 'src/**/*.js'],
     pathToTests = 'src/**/*.spec.js';
