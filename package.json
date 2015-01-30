@@ -19,17 +19,15 @@
     "lodash": "*",
     "glob": "*",
     "compression": "*",
-    "cors" : "*",
-    "jwt-simple" : "*",
-    "moment" : "*"
+    "cors": "*",
+    "jwt-simple": "*",
+    "moment": "*"
   },
   "devDependencies": {
     "gulp": "*",
+    "gulp-jasmine": "^2.0.0",
     "gulp-jshint": "*",
-    "jshint-stylish": "^1.0.0",
     "gulp-nodemon": "*",
-    "jasmine-node" : "*",
-    "gulp-jasmine" : "*",
-    "jasmine-reporters" : "*"
+    "jshint-stylish": "^1.0.0"
   }
 }
