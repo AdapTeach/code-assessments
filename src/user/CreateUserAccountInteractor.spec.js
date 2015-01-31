@@ -1,7 +1,7 @@
-var useCase = require('./CreateUserAccountUseCase');
+var CreateUserAccountInteractor = require('./CreateUserAccountInteractor');
 var ErrorType = require('../error/ErrorType');
 
-describe('CreateUserAccountUseCase', function () {
+describe('CreateUserAccountInteractor', function () {
 
     var interactor,
         gateway,
@@ -15,8 +15,8 @@ describe('CreateUserAccountUseCase', function () {
             create: function () {
             }
         };
-        interactor = new useCase.interactor(gateway);
-        request = new useCase.request();
+        interactor = new CreateUserAccountInteractor(gateway);
+        request = {};
     });
 
     function execute() {
