@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var CreateAssessmentInteractor = require('./CreateAssessmentInteractor');
 var ErrorType = require('../error/ErrorType');
-var TestValue = require('../entity/TestValue.mock');
+var TestData = require('../entity/TestData.mock.js');
 
 describe('CreateAssessmentInteractor', function () {
 
@@ -32,11 +32,12 @@ describe('CreateAssessmentInteractor', function () {
 
     describe('given user is logged in', function () {
         beforeEach(function () {
-            request.user = {id: 194551, username: 'assessment_creator'};
+            request.user = TestData.user({username: 'assessment_creator'});
         });
+
         describe('given assessment is valid', function () {
             beforeEach(function () {
-                request.assessment = TestValue.unsavedAssessment;
+                request.assessment = TestData.unsavedAssessment();
             });
             it('responds with created assessment', function () {
                 var createdAssessment = _.cloneDeep(request.assessment);
@@ -48,6 +49,7 @@ describe('CreateAssessmentInteractor', function () {
                 expect(response.assessment).toBe(createdAssessment);
             });
         });
+
     });
 
 });

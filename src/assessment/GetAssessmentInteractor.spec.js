@@ -1,6 +1,6 @@
 var GetAssessmentInteractor = require('./GetAssessmentInteractor');
 var ErrorType = require('../error/ErrorType');
-var TestValue = require('../entity/TestValue.mock');
+var TestData = require('../entity/TestData.mock.js');
 
 describe('GetAssessmentInteractor', function () {
 
@@ -30,7 +30,7 @@ describe('GetAssessmentInteractor', function () {
     });
 
     describe('given assessment exists', function () {
-        var assessment = TestValue.assessment;
+        var assessment = TestData.assessment;
         beforeEach(function () {
             spyOn(gateway, 'get').and.returnValue(assessment);
             request.assessmentId = assessment.id;
