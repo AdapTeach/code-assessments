@@ -7,8 +7,8 @@ describe('CreateAssessmentInteractor', function () {
 
     var interactor,
         gateway,
-        request,
-        response;
+        action,
+        reaction;
 
     beforeEach(function () {
         gateway = {
@@ -16,37 +16,37 @@ describe('CreateAssessmentInteractor', function () {
             }
         };
         interactor = new CreateAssessmentInteractor(gateway);
-        request = {};
+        action = {};
     });
 
     function execute() {
-        response = interactor.execute(request);
+        reaction = interactor.execute(action);
     }
 
     describe('given no logged user', function () {
-        it('responds with error', function () {
+        it('reacts with error', function () {
             execute();
-            expect(response.error.type).toBe(ErrorType.LOGIN_REQUIRED);
+            expect(reaction.error.type).toBe(ErrorType.LOGIN_REQUIRED);
         });
     });
 
     describe('given user is logged in', function () {
         beforeEach(function () {
-            request.user = TestData.user({username: 'assessment_creator'});
+            action.user = TestData.user({username: 'assessment_creator'});
         });
 
         describe('given assessment is valid', function () {
             beforeEach(function () {
-                request.assessment = TestData.unsavedAssessment();
+                action.assessment = TestData.unsavedAssessment();
             });
             it('responds with created assessment', function () {
-                var createdAssessment = _.cloneDeep(request.assessment);
+                var createdAssessment = _.cloneDeep(action.assessment);
                 createdAssessment.id = 5157411397;
                 spyOn(gateway, ['create']).and.returnValue(createdAssessment);
 
                 execute();
 
-                expect(response.assessment).toBe(createdAssessment);
+                expect(reaction.assessment).toBe(createdAssessment);
             });
         });
 

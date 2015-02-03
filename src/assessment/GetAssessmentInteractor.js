@@ -2,8 +2,8 @@ var ErrorType = require('../error/ErrorType');
 
 function GetAssessmentInteractor(gateway) {
 
-    this.execute = function (request) {
-        var assessmentId = request.assessmentId;
+    this.execute = function (action) {
+        var assessmentId = action.assessmentId;
         var assessment = gateway.get(assessmentId);
         if (!assessment) {
             return {
