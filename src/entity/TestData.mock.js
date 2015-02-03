@@ -23,7 +23,7 @@ var assessment = {
 
 var TestValue = {
 
-    user: function (properties) {
+    loggedUser: function (properties) {
         return cloneWith(user, properties);
     },
 

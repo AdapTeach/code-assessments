@@ -1,5 +1,5 @@
 var CreateUserAccountInteractor = require('./CreateUserAccountInteractor');
-var ErrorType = require('../error/ErrorType');
+var Errors = require('../error/Errors');
 
 describe('CreateUserAccountInteractor', function () {
 
@@ -30,7 +30,7 @@ describe('CreateUserAccountInteractor', function () {
         execute();
 
         expect(gateway.create).not.toHaveBeenCalled();
-        expect(reaction.error.type).toBe(ErrorType.INVALID_REQUEST);
+        expect(reaction.error.type).toBe(Errors.Type.INVALID_ACTION);
     });
 
     it('responds with created user when username is not empty', function () {
@@ -40,7 +40,7 @@ describe('CreateUserAccountInteractor', function () {
 
         execute();
 
-        expect(reaction.user).toBe(user);
+        expect(reaction.loggedUser).toBe(user);
         expect(gateway.create).toHaveBeenCalledWith(action.username);
     });
 

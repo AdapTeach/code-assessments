@@ -1,13 +1,13 @@
-var ErrorType = require('../error/ErrorType');
+var Errors = require('../error/Errors');
 
 function CreateUserAccountInteractor(gateway) {
 
     this.execute = function (action) {
         if (action.username.length === 0) {
-            return {error: {type: ErrorType.INVALID_REQUEST}};
+            return {error: {type: Errors.Type.INVALID_ACTION}};
         }
         var user = gateway.create(action.username);
-        var reaction = {user: user};
+        var reaction = {loggedUser: user};
         return reaction;
     };
 
