@@ -22,7 +22,7 @@ describe('GetAssessmentInteractor', function () {
         reaction = interactor.execute(action);
     }
 
-    it('responds with error when no assessment exists for id', function () {
+    it('reacts with error when no assessment exists for id', function () {
         action.id = 12345679;
 
         execute();
@@ -38,7 +38,7 @@ describe('GetAssessmentInteractor', function () {
             action.assessmentId = assessment.id;
         });
 
-        it('responds with assessment', function () {
+        it('reacts with assessment', function () {
             execute();
 
             expect(gateway.get).toHaveBeenCalledWith(assessment.id);

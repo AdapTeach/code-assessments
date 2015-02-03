@@ -23,13 +23,6 @@ describe('CreateAssessmentInteractor', function () {
         reaction = interactor.execute(action);
     }
 
-    describe('given no logged user', function () {
-        it('reacts with error', function () {
-            execute();
-            expect(reaction.error.type).toBe(ErrorType.LOGIN_REQUIRED);
-        });
-    });
-
     describe('given user is logged in', function () {
         beforeEach(function () {
             action.user = TestData.user({username: 'assessment_creator'});
