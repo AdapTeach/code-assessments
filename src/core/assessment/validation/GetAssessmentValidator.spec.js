@@ -48,11 +48,4 @@ describe('GetAssessmentValidator', function () {
         expectError(Errors.Type.INVALID_ACTION);
     });
 
-    it('reacts with ' + Errors.Type.ENTITY_NOT_FOUND + ' when no assessment exists for id', function () {
-        action.id = 12345679;
-
-        execute();
-
-        expectError(Errors.Type.ENTITY_NOT_FOUND);
-    });
 });

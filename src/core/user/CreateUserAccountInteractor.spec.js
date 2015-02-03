@@ -9,12 +9,7 @@ describe('CreateUserAccountInteractor', function () {
         reaction;
 
     beforeEach(function () {
-        gateway = {
-            get: function () {
-            },
-            create: function () {
-            }
-        };
+        gateway = jasmine.createSpyObj('gateway', ['create', 'get']);
         interactor = new CreateUserAccountInteractor(gateway);
         action = {};
     });
@@ -25,7 +20,6 @@ describe('CreateUserAccountInteractor', function () {
 
     it('responds with error when empty username', function () {
         action.username = '';
-        spyOn(gateway, 'create');
 
         execute();
 
@@ -36,7 +30,7 @@ describe('CreateUserAccountInteractor', function () {
     it('responds with created user when username is not empty', function () {
         action.username = 'Username';
         var user = {id: 1, username: action.username};
-        spyOn(gateway, 'create').and.returnValue(user);
+        gateway.create.and.returnValue(user);
 
         execute();
 

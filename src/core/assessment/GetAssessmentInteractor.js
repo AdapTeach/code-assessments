@@ -1,4 +1,4 @@
-var ValidationError = require('../error/Errors');
+var Errors = require('../error/Errors');
 
 function GetAssessmentInteractor(gateway) {
 
@@ -6,15 +6,9 @@ function GetAssessmentInteractor(gateway) {
         var assessmentId = action.assessmentId;
         var assessment = gateway.get(assessmentId);
         if (!assessment) {
-            return {
-                error: {
-                    type: ValidationError.Type.ENTITY_NOT_FOUND,
-                    message: 'No assessment found for ID : ' + assessmentId
-                }
-            };
-        } else {
-            return {assessment: assessment};
+            return Errors.entityNotFound('No assessment found for ID : ' + assessmentId);
         }
+        return {assessment: assessment};
     };
 
 }

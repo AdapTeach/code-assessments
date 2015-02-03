@@ -1,5 +1,6 @@
 var GetAssessmentInteractor = require('./GetAssessmentInteractor');
 var TestData = require('../../util/TestData.mock.js');
+var Errors = require('../error/Errors');
 
 describe('GetAssessmentInteractor', function () {
 
@@ -19,6 +20,14 @@ describe('GetAssessmentInteractor', function () {
     function execute() {
         reaction = interactor.execute(action);
     }
+
+    it('reacts with ' + Errors.Type.ENTITY_NOT_FOUND + ' when no assessment exists for id', function () {
+        action.id = 12345679;
+
+        execute();
+
+        expect(reaction.error.type).toBe(Errors.Type.ENTITY_NOT_FOUND);
+    });
 
     describe('given assessment exists', function () {
         var assessment = TestData.assessment;
