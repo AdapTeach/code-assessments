@@ -1,6 +1,6 @@
 var CreateAssessmentValidator = require('./CreateAssessmentValidator');
 var Errors = require('../../error/Errors');
-var TestData = require('../../entity/TestData.mock');
+var TestData = require('../../../util/TestData.mock');
 
 describe('CreateAssessmentValidator', function () {
 

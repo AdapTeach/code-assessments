@@ -1,17 +1,17 @@
 var _ = require('lodash');
 
-var Language = require('../assessment/Language');
+var ProgrammingLanguage = require('../entity/ProgrammingLanguage');
 
 var user = {
     id: 579523214567894,
-    username: 'test_user'
+    username: 'stub_user'
 };
 
 var assessment = {
     id: 1365479523,
-    title: 'Assessment',
-    language: Language.JAVA,
-    instructions: 'none',
+    title: 'Stub Assessment',
+    language: ProgrammingLanguage.JAVA,
+    instructions: 'Stub instruction',
     providedCompilationUnits: [],
     compilationUnitsToSubmit: [
         // TODO Add one
@@ -23,18 +23,23 @@ var assessment = {
 
 var TestValue = {
 
-    loggedUser: function (properties) {
-        return cloneWith(user, properties);
-    },
-
-    assessment: function (properties) {
-        return cloneWith(assessment, properties);
-    },
-    unsavedAssessment: function (properties) {
-        return cloneUnsavedWith(assessment, properties);
-    }
+    loggedUser: cloner(user),
+    assessment: cloner(assessment),
+    unsavedAssessment: unsavedCloner(assessment)
 
 };
+
+function cloner(original) {
+    return function (properties) {
+        return cloneWith(original, properties);
+    };
+}
+
+function unsavedCloner(original) {
+    return function (properties) {
+        return cloneUnsavedWith(original, properties);
+    };
+}
 
 function cloneWith(original, properties) {
     var clone = _.cloneDeep(original);

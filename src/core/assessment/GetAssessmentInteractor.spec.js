@@ -1,5 +1,5 @@
 var GetAssessmentInteractor = require('./GetAssessmentInteractor');
-var TestData = require('../entity/TestData.mock.js');
+var TestData = require('../../util/TestData.mock.js');
 
 describe('GetAssessmentInteractor', function () {
 

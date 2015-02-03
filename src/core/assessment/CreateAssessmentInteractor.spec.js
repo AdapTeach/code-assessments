@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var CreateAssessmentInteractor = require('./CreateAssessmentInteractor');
-var TestData = require('../entity/TestData.mock.js');
+var TestData = require('../../util/TestData.mock');
 
 describe('CreateAssessmentInteractor', function () {
 

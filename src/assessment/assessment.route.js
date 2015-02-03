@@ -2,7 +2,7 @@ var http = require('q-io/http');
 
 var config = require('../../config/config'),
     Assessment = require('./assessment.model'),
-    HttpError = require('../error/HttpError'),
+    HttpError = require('./HttpError'),
     ensureAuthenticated = require('../auth/auth.middleware').ensureAuthenticated;
 
 module.exports = function (app) {
