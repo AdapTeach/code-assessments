@@ -1,31 +1,31 @@
 var CreateUserAccountInteractor = require('./CreateUserAccountInteractor');
-var Stubs = require('../../util/Stubs.js');
+var Stubs = require('../../util/Stubs.mock.js');
 
 describe('CreateUserAccountInteractor', function () {
 
     var interactor,
         gateway,
-        action,
-        reaction;
+        action;
 
     beforeEach(function () {
-        gateway = jasmine.createSpyObj('gateway', ['create', 'get']);
+        gateway = Stubs.userGateway();
         interactor = new CreateUserAccountInteractor(gateway);
         action = {};
     });
 
     function execute() {
-        reaction = interactor.execute(action);
+        return interactor.execute(action);
     }
 
-    it('responds with created user', function () {
-        var stubUser = Stubs.unregisteredUser();
-        gateway.create.and.returnValue(stubUser);
+    it('responds with created user', function (done) {
+        action.user = Stubs.unregisteredUser();
 
-        execute();
-
-        expect(reaction.loggedUser).toBe(stubUser);
-        expect(gateway.create).toHaveBeenCalledWith(action.username);
+        execute()
+            .then(function (reaction) {
+                expect(reaction.user.id).toEqual(jasmine.any(Number));
+                expect(gateway.save).toHaveBeenCalledWith(action.user);
+            })
+            .then(done);
     });
 
 });

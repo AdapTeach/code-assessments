@@ -1,6 +1,8 @@
 var _ = require('lodash');
 
 var ProgrammingLanguage = require('../entity/ProgrammingLanguage');
+var InMemoryUserGateway = require('../core/gateway/InMemoryUserGateway.mock');
+var InMemoryAssessmentGateway = require('../core/gateway/InMemoryAssessmentGateway.mock');
 
 var user = {
     id: 579523214567894,
@@ -23,20 +25,31 @@ var assessment = {
 
 var Stubs = {
 
-    loggedUser: factory(user),
-    unregisteredUser: unsavedFactory(user),
-    assessment: factory(assessment),
-    unsavedAssessment: unsavedFactory(assessment)
+    registeredUser: entityFactory(user),
+    unregisteredUser: unsavedEntityFactory(user),
+    assessment: entityFactory(assessment),
+    unsavedAssessment: unsavedEntityFactory(assessment),
+
+    userGateway: gatewayFactory(InMemoryUserGateway),
+    assessmentGateway: gatewayFactory(InMemoryAssessmentGateway)
 
 };
 
-function factory(original) {
+function gatewayFactory(Gateway) {
+    return function () {
+        var gateway = new Gateway();
+        gateway.addSpies();
+        return gateway;
+    };
+}
+
+function entityFactory(original) {
     return function (properties) {
         return cloneWith(original, properties);
     };
 }
 
-function unsavedFactory(original) {
+function unsavedEntityFactory(original) {
     return function (properties) {
         return cloneUnsavedWith(original, properties);
     };

@@ -1,8 +1,10 @@
 function CreateAssessmentInteractor(gateway) {
 
     this.execute = function (action) {
-        var createdAssessment = gateway.create(action.assessment);
-        return {assessment: createdAssessment};
+        return gateway.save(action.assessment)
+            .then(function (createdAssessment) {
+                return {assessment: createdAssessment};
+            });
     };
 
 }

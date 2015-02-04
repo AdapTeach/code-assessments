@@ -1,12 +1,16 @@
+var Future = require('bluebird');
+
 var Errors = require('../../error/Errors');
 
-function CreateUserAccountValidator(interactor, gateway) {
+function CreateUserAccountValidator(interactor) {
 
     this.execute = function (action) {
-        if (!action.username) {
-            return Errors.invalidAction('username required');
-        }
-        return interactor.execute(action);
+        return new Future(function (resolve, reject) {
+            if (!action.user.username)
+                reject(Errors.invalidAction('username required'));
+            else
+                resolve(interactor.execute(action));
+        });
     };
 
 }

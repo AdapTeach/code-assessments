@@ -1,8 +1,10 @@
 function CreateUserAccountInteractor(gateway) {
 
     this.execute = function (action) {
-        var user = gateway.create(action.username);
-        return {loggedUser: user};
+        return gateway.save(action.user)
+            .then(function (user) {
+                return {user: user};
+            });
     };
 
 }

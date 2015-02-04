@@ -21,7 +21,7 @@ module.exports = function (app) {
             request.body.creator = request.user._id;
             request.body.assessment = request.params.id;
             Guide
-                .create(request.params.id, request.body)
+                .save(request.params.id, request.body)
                 .then(function (guide) {
                     var data = {
                         _id : guide._id,

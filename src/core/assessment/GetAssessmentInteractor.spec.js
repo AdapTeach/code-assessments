@@ -1,46 +1,61 @@
 var GetAssessmentInteractor = require('./GetAssessmentInteractor');
-var Stubs = require('../../util/Stubs.js');
+var Stubs = require('../../util/Stubs.mock.js');
 var Errors = require('../error/Errors');
 
 describe('GetAssessmentInteractor', function () {
 
     var interactor,
         gateway,
-        action,
-        reaction;
+        action;
 
     beforeEach(function () {
-        gateway = {
-            get: jasmine.createSpy('get')
-        };
+        gateway = Stubs.assessmentGateway();
         interactor = new GetAssessmentInteractor(gateway);
         action = {};
     });
 
     function execute() {
-        reaction = interactor.execute(action);
+        return interactor.execute(action);
     }
 
-    it('reacts with ' + Errors.Type.ENTITY_NOT_FOUND + ' when no assessment exists for id', function () {
-        action.id = 12345679;
+    function failIfCalled() {
+        expect('function').toBe('not called');
+    }
 
-        execute();
+    function expectError(expectedType) {
+        return function (error) {
+            expect(error.type).toBe(expectedType);
+        };
+    }
 
-        expect(reaction.error.type).toBe(Errors.Type.ENTITY_NOT_FOUND);
+    it('reacts with ' + Errors.Type.ENTITY_NOT_FOUND + ' when no assessment exists for id', function (done) {
+        action.id = 454147;
+
+        execute()
+            .then(failIfCalled)
+            .catch(expectError(Errors.Type.ENTITY_NOT_FOUND))
+            .finally(done);
     });
 
     describe('given assessment exists', function () {
-        var assessment = Stubs.assessment;
-        beforeEach(function () {
-            gateway.get.and.returnValue(assessment);
-            action.assessmentId = assessment.id;
+        var assessment;
+        beforeEach(function (done) {
+            gateway.save(Stubs.unsavedAssessment())
+                .then(function (savedAssessment) {
+                    assessment = savedAssessment;
+                    action.id = assessment.id;
+                })
+                .finally(done);
         });
 
-        it('reacts with assessment', function () {
-            execute();
-
-            expect(gateway.get).toHaveBeenCalledWith(assessment.id);
-            expect(reaction.assessment).toBe(assessment);
+        it('reacts with assessment', function (done) {
+            execute()
+                .then(function (reaction) {
+                    expect(gateway.get).toHaveBeenCalledWith(assessment.id);
+                    expect(reaction.assessment).toBe(assessment);
+                })
+                .catch(failIfCalled)
+                .finally(done);
         });
 
     });

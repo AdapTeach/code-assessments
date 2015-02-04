@@ -1,13 +1,12 @@
 var CreateAssessmentValidator = require('./CreateAssessmentValidator');
 var Errors = require('../../error/Errors');
-var Stubs = require('../../../util/Stubs.js');
+var Stubs = require('../../../util/Stubs.mock.js');
 
 describe('CreateAssessmentValidator', function () {
 
     var validator,
         interactor,
-        action,
-        reaction;
+        action;
 
 
     beforeEach(function () {
@@ -19,25 +18,39 @@ describe('CreateAssessmentValidator', function () {
     });
 
     function execute() {
-        reaction = validator.execute(action);
+        return validator.execute(action);
     }
 
-    it('executes action when valid', function () {
-        action.loggedUser = Stubs.loggedUser({username: 'assessment_creator'});
+    function expectError(expectedType) {
+        return function (error) {
+            expect(error.type).toBe(expectedType);
+            expect(interactor.execute).not.toHaveBeenCalled();
+        };
+    }
+
+    function failIfCalled() {
+        expect('function').toBe('not called');
+    }
+
+    it('executes action when valid', function (done) {
+        action.user = Stubs.registeredUser({username: 'assessment_creator'});
         var stubReaction = 'StubReaction';
         interactor.execute.and.returnValue(stubReaction);
 
-        execute();
-
-        expect(interactor.execute).toHaveBeenCalledWith(action);
-        expect(reaction).toBe(stubReaction);
+        execute()
+            .then(function (reaction) {
+                expect(interactor.execute).toHaveBeenCalledWith(action);
+                expect(reaction).toBe(stubReaction);
+            })
+            .catch(failIfCalled)
+            .finally(done);
     });
 
-    it('reacts with ' + Errors.Type.LOGIN_REQUIRED + ' when no user is logged', function () {
-        execute();
-
-        expect(reaction.error.type).toBe(Errors.Type.LOGIN_REQUIRED);
-        expect(interactor.execute).not.toHaveBeenCalled();
+    it('reacts with ' + Errors.Type.LOGIN_REQUIRED + ' error when no user is logged in', function (done) {
+        execute()
+            .then(failIfCalled)
+            .catch(expectError(Errors.Type.LOGIN_REQUIRED))
+            .finally(done);
     });
 
 });

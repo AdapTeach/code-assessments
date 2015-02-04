@@ -1,11 +1,15 @@
+var Future = require('bluebird');
 var Errors = require('../../error/Errors');
 
-function GetAssessmentValidator(interactor, gateway) {
+function GetAssessmentValidator(interactor) {
 
     this.execute = function (action) {
-        if (!action.id)
-            return Errors.invalidAction();
-        return interactor.execute(action);
+        return new Future(function (resolve, reject) {
+            if (!action.id)
+                reject(Errors.invalidAction('ID is required'));
+            else
+                resolve(interactor.execute(action));
+        });
     };
 
 }

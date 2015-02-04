@@ -1,7 +1,7 @@
 var Type = {
     ENTITY_NOT_FOUND: 'ENTITY_NOT_FOUND',
     INVALID_ACTION: 'INVALID_ACTION',
-    LOGIN_REQUIRED: 'LOGIN_REQUIRED}'
+    LOGIN_REQUIRED: 'LOGIN_REQUIRED'
 };
 
 var ValidationError = {
@@ -17,9 +17,8 @@ var ValidationError = {
 function error(type) {
     return function (message) {
         return {
-            error: {
-                type: type, message: message
-            }
+            type: type,
+            message: message
         };
     };
 }

@@ -1,11 +1,16 @@
+var Future = require('bluebird');
+
 var Errors = require('../../error/Errors');
 
-function CreateAssessmentValidator(decorated) {
+function CreateAssessmentValidator(interactor) {
 
     this.execute = function (action) {
-        if (!action.loggedUser)
-            return Errors.loginRequired();
-        return decorated.execute(action);
+        return new Future(function (resolve, reject) {
+            if (!action.user)
+                reject(Errors.loginRequired());
+            else
+                resolve(interactor.execute(action));
+        });
     };
 
 }

@@ -24,6 +24,7 @@
     "moment": "*"
   },
   "devDependencies": {
+    "bluebird": "^2.9.6",
     "gulp": "*",
     "gulp-jasmine": "^2.0.0",
     "gulp-jshint": "*",

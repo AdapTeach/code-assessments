@@ -34,14 +34,13 @@ gulp.task('lint', function () {
 gulp.task('test', ['lint'], function () {
     gulp.src(pathToTests)
         .pipe(jasmine({
-            //includeStackTrace: true
+            includeStackTrace: true
         }))
         .on('error', function (e) {
-            //console.error('Error running tests');
-            //if (e.stack)
-            //    console.error(e.stack);
-            //else
-            //    console.error(e.message);
+            if (e.stack)
+                console.error(e.stack);
+            else if (e.message != 'Tests failed')
+                console.error(e.message);
         });
 });
 
