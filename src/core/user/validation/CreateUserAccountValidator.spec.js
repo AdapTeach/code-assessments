@@ -1,6 +1,6 @@
 var CreateUserAccountValidator = require('./CreateUserAccountValidator');
 var Errors = require('../../error/Errors');
-var Stubs = require('../../../util/Stubs.mock');
+var Stubs = require('../../util/Stubs.mock');
 
 describe('CreateUserAccountValidator', function () {
 

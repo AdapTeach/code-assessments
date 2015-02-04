@@ -1,5 +1,5 @@
 var CreateUserAccountInteractor = require('./CreateUserAccountInteractor');
-var Stubs = require('../../util/Stubs.mock.js');
+var Stubs = require('../util/Stubs.mock.js');
 
 describe('CreateUserAccountInteractor', function () {
 

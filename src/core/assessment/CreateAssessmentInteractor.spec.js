@@ -1,5 +1,5 @@
 var CreateAssessmentInteractor = require('./CreateAssessmentInteractor');
-var Stubs = require('../../util/Stubs.mock.js');
+var Stubs = require('../util/Stubs.mock');
 
 describe('CreateAssessmentInteractor', function () {
 

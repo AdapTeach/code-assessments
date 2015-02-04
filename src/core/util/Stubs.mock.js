@@ -1,8 +1,8 @@
 var _ = require('lodash');
 
 var ProgrammingLanguage = require('../entity/ProgrammingLanguage');
-var InMemoryUserGateway = require('../core/gateway/InMemoryUserGateway.mock');
-var InMemoryAssessmentGateway = require('../core/gateway/InMemoryAssessmentGateway.mock');
+var InMemoryUserGateway = require('../gateway/InMemoryUserGateway.mock');
+var InMemoryAssessmentGateway = require('../gateway/InMemoryAssessmentGateway.mock');
 
 var user = {
     id: 579523214567894,

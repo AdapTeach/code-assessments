@@ -1,6 +1,6 @@
 var GetAssessmentValidator = require('./GetAssessmentValidator');
 var Errors = require('../../error/Errors');
-var Stubs = require('../../../util/Stubs.mock');
+var Stubs = require('../../util/Stubs.mock');
 
 describe('GetAssessmentValidator', function () {
 
