@@ -21,21 +21,22 @@ var assessment = {
     ]
 };
 
-var TestValue = {
+var Stubs = {
 
-    loggedUser: cloner(user),
-    assessment: cloner(assessment),
-    unsavedAssessment: unsavedCloner(assessment)
+    loggedUser: factory(user),
+    unregisteredUser: unsavedFactory(user),
+    assessment: factory(assessment),
+    unsavedAssessment: unsavedFactory(assessment)
 
 };
 
-function cloner(original) {
+function factory(original) {
     return function (properties) {
         return cloneWith(original, properties);
     };
 }
 
-function unsavedCloner(original) {
+function unsavedFactory(original) {
     return function (properties) {
         return cloneUnsavedWith(original, properties);
     };
@@ -54,4 +55,4 @@ function cloneUnsavedWith(original, properties) {
     return clone;
 }
 
-module.exports = TestValue;
+module.exports = Stubs;

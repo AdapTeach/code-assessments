@@ -1,6 +1,6 @@
 var CreateAssessmentValidator = require('./CreateAssessmentValidator');
 var Errors = require('../../error/Errors');
-var TestData = require('../../../util/TestData.mock');
+var Stubs = require('../../../util/Stubs.js');
 
 describe('CreateAssessmentValidator', function () {
 
@@ -23,7 +23,7 @@ describe('CreateAssessmentValidator', function () {
     }
 
     it('executes action when valid', function () {
-        action.loggedUser = TestData.loggedUser({username: 'assessment_creator'});
+        action.loggedUser = Stubs.loggedUser({username: 'assessment_creator'});
         var stubReaction = 'StubReaction';
         interactor.execute.and.returnValue(stubReaction);
 

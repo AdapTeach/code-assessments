@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var CreateAssessmentInteractor = require('./CreateAssessmentInteractor');
-var TestData = require('../../util/TestData.mock');
+var Stubs = require('../../util/Stubs.js');
 
 describe('CreateAssessmentInteractor', function () {
 
@@ -22,8 +22,8 @@ describe('CreateAssessmentInteractor', function () {
     }
 
     beforeEach(function () {
-        action.loggedUser = TestData.loggedUser({username: 'assessment_creator'});
-        action.assessment = TestData.unsavedAssessment();
+        action.loggedUser = Stubs.loggedUser({username: 'assessment_creator'});
+        action.assessment = Stubs.unsavedAssessment();
     });
 
     it('reacts with created assessment', function () {

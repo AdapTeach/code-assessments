@@ -33,13 +33,15 @@ gulp.task('lint', function () {
 
 gulp.task('test', ['lint'], function () {
     gulp.src(pathToTests)
-        .pipe(jasmine())
+        .pipe(jasmine({
+            //includeStackTrace: true
+        }))
         .on('error', function (e) {
-            console.error('Error running tests');
-            if (e.stack)
-                console.error(e.stack);
-            else
-                console.error(e.message);
+            //console.error('Error running tests');
+            //if (e.stack)
+            //    console.error(e.stack);
+            //else
+            //    console.error(e.message);
         });
 });
 

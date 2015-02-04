@@ -1,5 +1,5 @@
 var GetAssessmentInteractor = require('./GetAssessmentInteractor');
-var TestData = require('../../util/TestData.mock.js');
+var Stubs = require('../../util/Stubs.js');
 var Errors = require('../error/Errors');
 
 describe('GetAssessmentInteractor', function () {
@@ -30,7 +30,7 @@ describe('GetAssessmentInteractor', function () {
     });
 
     describe('given assessment exists', function () {
-        var assessment = TestData.assessment;
+        var assessment = Stubs.assessment;
         beforeEach(function () {
             gateway.get.and.returnValue(assessment);
             action.assessmentId = assessment.id;

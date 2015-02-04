@@ -13,7 +13,7 @@ describe('CreateUserAccountValidator', function () {
         interactor = {
             execute: jasmine.createSpy('execute')
         };
-        gateway = jasmine.ceateSpyObj('gateway', ['create', 'get', 'update', 'delete']);
+        gateway = jasmine.createSpyObj('gateway', ['create', 'get', 'update', 'delete']);
         validator = new CreateUserAccountValidator(interactor, gateway);
         action = {};
     });
@@ -26,5 +26,13 @@ describe('CreateUserAccountValidator', function () {
         expect(reaction.error.type).toBe(expectedType);
         expect(interactor.execute).not.toHaveBeenCalled();
     }
+
+    it('responds with ' + Errors.Type.INVALID_ACTION + ' error when username is empty', function () {
+        action.username = '';
+
+        execute();
+
+        expectError(Errors.Type.INVALID_ACTION);
+    });
 
 });

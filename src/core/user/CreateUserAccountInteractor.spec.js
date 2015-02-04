@@ -1,5 +1,5 @@
 var CreateUserAccountInteractor = require('./CreateUserAccountInteractor');
-var Errors = require('../error/Errors');
+var Stubs = require('../../util/Stubs.js');
 
 describe('CreateUserAccountInteractor', function () {
 
@@ -18,23 +18,13 @@ describe('CreateUserAccountInteractor', function () {
         reaction = interactor.execute(action);
     }
 
-    it('responds with error when empty username', function () {
-        action.username = '';
+    it('responds with created user', function () {
+        var stubUser = Stubs.unregisteredUser();
+        gateway.create.and.returnValue(stubUser);
 
         execute();
 
-        expect(gateway.create).not.toHaveBeenCalled();
-        expect(reaction.error.type).toBe(Errors.Type.INVALID_ACTION);
-    });
-
-    it('responds with created user when username is not empty', function () {
-        action.username = 'Username';
-        var user = {id: 1, username: action.username};
-        gateway.create.and.returnValue(user);
-
-        execute();
-
-        expect(reaction.loggedUser).toBe(user);
+        expect(reaction.loggedUser).toBe(stubUser);
         expect(gateway.create).toHaveBeenCalledWith(action.username);
     });
 
