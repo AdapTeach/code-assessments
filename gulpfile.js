@@ -1,10 +1,12 @@
 var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     jasmine = require('gulp-jasmine'),
+    mocha = require('gulp-mocha'),
     nodemon = require('gulp-nodemon');
 
 var pathToSrc = ['config/**/*.js', 'src/**/*.js'],
-    pathToTests = 'src/**/*.spec.js';
+    pathToUnitTests = 'src/**/*.spec.js',
+    pathToAcceptanceTests = 'src/**/*.supertest.js';
 
 gulp.task('default', ['dev'], function () {
 });
@@ -32,7 +34,7 @@ gulp.task('lint', function () {
 });
 
 gulp.task('test', ['lint'], function () {
-    gulp.src(pathToTests)
+    gulp.src(pathToUnitTests)
         .pipe(jasmine({
             includeStackTrace: true
         }))
@@ -46,6 +48,11 @@ gulp.task('test', ['lint'], function () {
 
 gulp.task('tdd', ['test'], function () {
     gulp.watch(pathToSrc, ['test']);
+});
+
+gulp.task('supertest', ['test'], function () {
+    gulp.src(pathToAcceptanceTests)
+        .pipe(mocha({reporter: 'nyan'}));
 });
 
 /////////////////////////////////////

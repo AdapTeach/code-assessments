@@ -1,6 +1,6 @@
 var mongoose = require('mongoose-q')(require('mongoose')),
     Guide = mongoose.model('Guide'),
-    HttpError = require('.././HttpError'),
+    HttpError = require('../../web/HttpError'),
     ensureAuthenticated = require('../../auth/auth.middleware').ensureAuthenticated;
 
 module.exports = function (app) {

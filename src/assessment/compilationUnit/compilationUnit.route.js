@@ -1,5 +1,5 @@
 var CompilationUnit = require('./compilationUnit.model'),
-    HttpError = require('.././HttpError'),
+    HttpError = require('../../web/HttpError'),
     ensureAuthenticated = require('../../auth/auth.middleware').ensureAuthenticated;
 
 module.exports = function (app) {
